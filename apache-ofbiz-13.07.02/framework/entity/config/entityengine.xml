@@ -324,7 +324,7 @@ access. For a detailed description see the core/docs/entityconfig.html file.
         <read-data reader-name="ext"/>
         <inline-jdbc
                 jdbc-driver="com.mysql.jdbc.Driver"
-                jdbc-uri="jdbc:mysql://127.0.0.1/olbius?autoReconnect=true"
+                jdbc-uri="jdbc:mysql://127.0.0.1/fptaptech?autoReconnect=true"
                 jdbc-username="root"
                 jdbc-password="123456"
                 isolation-level="ReadCommitted"
@@ -355,7 +355,7 @@ access. For a detailed description see the core/docs/entityconfig.html file.
         <read-data reader-name="ext"/>
         <inline-jdbc
                 jdbc-driver="com.mysql.jdbc.Driver"
-                jdbc-uri="jdbc:mysql://127.0.0.1/olbiusolap?autoReconnect=true"
+                jdbc-uri="jdbc:mysql://127.0.0.1/fptaptecholap?autoReconnect=true"
                 jdbc-username="root"
                 jdbc-password="123456"
                 isolation-level="ReadCommitted"
@@ -386,7 +386,7 @@ access. For a detailed description see the core/docs/entityconfig.html file.
         <read-data reader-name="ext"/>
         <inline-jdbc
                 jdbc-driver="com.mysql.jdbc.Driver"
-                jdbc-uri="jdbc:mysql://127.0.0.1/olbiustenant?autoReconnect=true"
+                jdbc-uri="jdbc:mysql://127.0.0.1/fptaptechtenant?autoReconnect=true"
                 jdbc-username="root"
                 jdbc-password="123456"
                 isolation-level="ReadCommitted"
@@ -517,7 +517,7 @@ access. For a detailed description see the core/docs/entityconfig.html file.
         <read-data reader-name="ext"/>
         <inline-jdbc
                 jdbc-driver="org.postgresql.Driver"
-                jdbc-uri="jdbc:postgresql://127.0.0.1/olbiusolap2"
+                jdbc-uri="jdbc:postgresql://127.0.0.1/fptaptecholap"
                 jdbc-username="postgres"
                 jdbc-password="123456"
                 isolation-level="ReadCommitted"
@@ -551,7 +551,7 @@ access. For a detailed description see the core/docs/entityconfig.html file.
         <read-data reader-name="ext"/>
         <inline-jdbc
                 jdbc-driver="org.postgresql.Driver"
-                jdbc-uri="jdbc:postgresql://127.0.0.1/olbiustenant2"
+                jdbc-uri="jdbc:postgresql://127.0.0.1/fptaptechtenant"
                 jdbc-username="postgres"
                 jdbc-password="123456"
                 isolation-level="ReadCommitted"

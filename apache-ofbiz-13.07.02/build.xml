@@ -252,6 +252,55 @@ under the License.
         <iterate target="jar" filelist="specialpurpose-builds"/>
     </target>
 
+	<target name="delete-postgres-db">
+			<xmlproperty file="framework/entity/config/entityengine.xml" collapseAttributes="true"/>
+			<property name="datasource-name" value="${entity-config.delegator.group-map.datasource-name}"/>
+			<script language="javascript">
+			  var arr = project.getProperty('datasource-name').split(',');
+			  project.setProperty('datasource-name', arr[0]);
+			</script>
+			
+			<property name="datasource-description" value="${entity-config.datasource.name}"/>
+			<property name="datasource-user" value="${entity-config.datasource.inline-jdbc.jdbc-username}"/>
+			<property name="datasource-pass" value="${entity-config.datasource.inline-jdbc.jdbc-password}"/>
+			<property name="datasource-uri" value="${entity-config.datasource.inline-jdbc.jdbc-uri}"/>
+			<script language="javascript">
+				<![CDATA[
+				  arr = project.getProperty('datasource-description').split(',');
+				  var arr1 = project.getProperty('datasource-user').split(',');
+				  var arr2 = project.getProperty('datasource-pass').split(',');
+				  var arr3 = project.getProperty('datasource-uri').split(',');		
+				  for(i=0; i < arr.length;i++){
+					if(arr[i].equals(project.getProperty('datasource-name'))){
+						project.setProperty('USERNAME', arr1[i]);
+						project.setProperty('USERPASS', arr2[i]);
+						
+						var arr4 = arr3[i].split('/');
+						var tmpURI = arr4[0];
+						for(j = 1; j < arr4.length - 1; j++){
+							tmpURI += "/" + arr4[j];
+						}
+						tmpURI += "/template1";
+						project.setProperty('URI', tmpURI);
+						project.setProperty('DBNAME', arr4[arr4.length - 1]);
+						break;
+					}
+				  }
+				]]>
+			</script>	
+			<echo message="${USERNAME}"></echo>
+			<sql driver="org.postgresql.Driver"
+				classpath="framework/entity/lib/jdbc/postgresql-9.3-1101.jdbc4.jar"
+	            url="${URI}"
+	            userid="${USERNAME}"
+	            password="${USERPASS}"
+	            autocommit="true">
+			    DROP DATABASE ${DBNAME};
+	            CREATE DATABASE ${DBNAME} OWNER "${USERNAME}";
+	        </sql>
+			<echo>Delete and create successfully.</echo>
+		</target>
+	
     <macrodef name="hotdeployant">
         <attribute name="target" default=""/>
         <sequential>
