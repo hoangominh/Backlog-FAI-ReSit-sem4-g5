@@ -173,6 +173,40 @@ under the License.
         </section>
     </screen>
 
+	<screen name="MatrimonySiteGlobalDecorator">
+		<section>
+			<widgets>
+				 <!-- render content area -->
+                <container style="contentarea">
+                    <decorator-section-include name="pre-body" />
+                    <container id="column-container">
+                        <section>
+                            <condition>
+                                <if-empty-section section-name="left-column" />
+                            </condition>
+                            <widgets>
+                                <container id="content-main-section">
+                                    <decorator-section-include name="body" />
+                                </container>
+                            </widgets>
+                            <fail-widgets>
+                                <container style="left">
+                                    <decorator-section-include name="left-column" />
+                                </container>
+                                <container id="content-main-section" style="leftonly">
+                                    <container style="no-clear" id="centerdiv">
+                                        <decorator-section-include name="body" />
+                                    </container>
+                                </container>
+                            </fail-widgets>
+                        </section>
+                        <container style="clear"></container>
+                    </container>
+                </container>
+			</widgets>
+		</section>
+	</screen>
+
     <!-- Global decorator for General Screens/Pages -->
     <screen name="GlobalDecorator">
         <section>

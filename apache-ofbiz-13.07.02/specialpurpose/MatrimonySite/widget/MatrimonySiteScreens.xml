@@ -15,5 +15,23 @@
             </widgets>
         </section>
     </screen>
-
+	
+	<screen name="Home">
+		<section>
+			<actions>
+			</actions>
+			<widgets>
+				<decorator-screen name="MatrimonySiteCommonDecorator" location="${parameters.mainDecoratorLocation}">
+					<decorator-section name="body">
+						<platform-specific>
+									<html>
+										<html-template location="component://MatrimonySite/webapp/MatrimonySite/home/home.ftl" />
+									</html>
+						</platform-specific>
+					</decorator-section>
+				</decorator-screen>
+			</widgets>
+		</section>
+	</screen>
+	
 </screens>
