@@ -21,7 +21,7 @@
     -->
 
     <!-- Request Mappings -->
-    <request-map uri="main"><security https="true" auth="false"/><response name="success" type="view" value="main"/></request-map>
+    <request-map uri="main"><security https="true" auth="false"/><response name="success" type="view" value="Home"/></request-map>
     
     <request-map uri="Home">
 		<security https="true" auth="false" />
@@ -33,9 +33,9 @@
 		<response name="success" type="view" value="SignUp" />
 	</request-map>
 	
-    <request-map uri="SignIn">
-		<security https="true" auth="false" />
-		<response name="success" type="view" value="SignIn" />
+    <request-map uri="TimeLine">
+		<security https="true" auth="true" />
+		<response name="success" type="view" value="TimeLine" />
 	</request-map>
 	
 	<request-map uri="getGeoData">
@@ -61,5 +61,5 @@
     <view-map name="main" type="screen" page="component://MatrimonySite/widget/MatrimonySiteScreens.xml#main"/>
     <view-map name="Home" type="screen" page="component://MatrimonySite/widget/MatrimonySiteScreens.xml#Home"/>
     <view-map name="SignUp" type="screen" page="component://MatrimonySite/widget/MatrimonySiteScreens.xml#SignUp"/>
-    <view-map name="SignIn" type="screen" page="component://MatrimonySite/widget/MatrimonySiteScreens.xml#SignIn"/>
+    <view-map name="TimeLine" type="screen" page="component://MatrimonySite/widget/MatrimonySiteScreens.xml#TimeLine"/>
 </site-conf>

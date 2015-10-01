@@ -50,7 +50,7 @@
 			</widgets>
 		</section>
 	</screen>
-	<screen name="SignIn">
+	<screen name="TimeLine">
 		<section>
 			<actions>
 			</actions>
@@ -59,7 +59,7 @@
 					<decorator-section name="body">
 						<platform-specific>
 									<html>
-										<html-template location="component://MatrimonySite/webapp/MatrimonySite/home/signIn.ftl" />
+										<html-template location="component://MatrimonySite/webapp/MatrimonySite/home/timeLine.ftl" />
 									</html>
 						</platform-specific>
 					</decorator-section>

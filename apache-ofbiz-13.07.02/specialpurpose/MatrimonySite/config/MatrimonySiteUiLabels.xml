@@ -149,4 +149,12 @@
 		<value xml:lang="en">Create Success</value>
 		<value xml:lang="vi">Tạo mới thành công</value>
 	</property>
+	<property key="TimeLine">
+		<value xml:lang="en">TimeLine</value>
+		<value xml:lang="vi">TimeLine</value>
+	</property>
+	<property key="Logout">
+		<value xml:lang="en">Logout</value>
+		<value xml:lang="vi">Đăng xuất</value>
+	</property>
 </resource>
