@@ -4,7 +4,7 @@
 <head>
 	<title>MatrimonySite: ${StringUtil.wrapString(uiLabelMap.MSSignUp)}</title>
 </head>
-
+<a href="TimeLine">${StringUtil.wrapString(uiLabelMap.MSSignIn)}</a>
 <div id="signUp">
 	<div class="span12 no-left-margin boder-all-profile">
 	<span class="text-header">${uiLabelMap.MSAccountDetails}</span>
