@@ -445,7 +445,7 @@ access. For a detailed description see the core/docs/entityconfig.html file.
         <read-data reader-name="ext"/>
         <inline-jdbc
                 jdbc-driver="org.postgresql.Driver"
-                jdbc-uri="jdbc:postgresql://127.0.0.1/fptaptech"
+                jdbc-uri="jdbc:postgresql://127.0.0.1/g5"
                 jdbc-username="postgres"
                 jdbc-password="123456"
                 isolation-level="ReadCommitted"
@@ -517,7 +517,7 @@ access. For a detailed description see the core/docs/entityconfig.html file.
         <read-data reader-name="ext"/>
         <inline-jdbc
                 jdbc-driver="org.postgresql.Driver"
-                jdbc-uri="jdbc:postgresql://127.0.0.1/fptaptecholap"
+                jdbc-uri="jdbc:postgresql://127.0.0.1/g5olap"
                 jdbc-username="postgres"
                 jdbc-password="123456"
                 isolation-level="ReadCommitted"
@@ -551,7 +551,7 @@ access. For a detailed description see the core/docs/entityconfig.html file.
         <read-data reader-name="ext"/>
         <inline-jdbc
                 jdbc-driver="org.postgresql.Driver"
-                jdbc-uri="jdbc:postgresql://127.0.0.1/fptaptechtenant"
+                jdbc-uri="jdbc:postgresql://127.0.0.1/g5tenant"
                 jdbc-username="postgres"
                 jdbc-password="123456"
                 isolation-level="ReadCommitted"

@@ -16,4 +16,137 @@
         <value xml:lang="en">You are not allowed to view this page.</value>
         <value xml:lang="zh">不允许你浏览这个页面。</value>
     </property>
+    
+    <property key="MSSignIn">
+        <value xml:lang="en">Sign In</value>
+        <value xml:lang="vi">Đăng nhập</value>
+    </property>
+    <property key="MSSignUp">
+        <value xml:lang="en">Sign Up</value>
+        <value xml:lang="vi">Đăng ký</value>
+    </property>
+    <property key="MSAccountDetails">
+        <value xml:lang="en">Account Details</value>
+        <value xml:lang="vi">Thông tin tài khoản</value>
+    </property>
+    <property key="MSUsername">
+        <value xml:lang="en">Username</value>
+        <value xml:lang="vi">Tên đăng nhập</value>
+    </property>
+    <property key="MSEmailID">
+        <value xml:lang="en">Email ID</value>
+        <value xml:lang="vi">Email</value>
+    </property>
+    <property key="MSPassword">
+        <value xml:lang="en">Password</value>
+        <value xml:lang="vi">Mật khẩu</value>
+    </property>
+    <property key="MSBasicDetails">
+        <value xml:lang="en">Basic Details</value>
+        <value xml:lang="vi">Thông tin cơ bản</value>
+    </property>
+    <property key="MSFirstName">
+    	<value xml:lang="en">First name</value>
+        <value xml:lang="vi">Tên</value>
+    </property>
+    <property key="MSMiddleName">
+    	<value xml:lang="en">Middle Name</value>
+        <value xml:lang="vi">Tên đệm</value>
+    </property>
+    <property key="MSLastName">
+    	<value xml:lang="en">Last name</value>
+        <value xml:lang="vi">Họ</value>
+    </property>
+    <property key="MSGender">
+        <value xml:lang="en">Gender</value>
+        <value xml:lang="vi">Giới tính</value>
+    </property>
+    <property key="MSBirthDate">
+        <value xml:lang="en">Birth Date</value>
+        <value xml:lang="vi">Ngày sinh</value>
+    </property>
+    <property key="MSMaritalStatus">
+        <value xml:lang="en">Status</value>
+        <value xml:lang="vi">Tình trạng</value>
+    </property>
+    <property key="MSHeight">
+        <value xml:lang="en">Height(cm)</value>
+        <value xml:lang="vi">Chiều cao(cm)</value>
+    </property>
+    <property key="MSCity">
+        <value xml:lang="en">City</value>
+        <value xml:lang="vi">Thành phố</value>
+    </property>
+    <property key="MSContactNumber">
+        <value xml:lang="en">Contact Number</value>
+        <value xml:lang="vi">Số điện thoại</value>
+    </property>
+    <property key="MSMotherTongue">
+        <value xml:lang="en">Mother Tongue</value>
+        <value xml:lang="vi">Tiếng mẹ đẻ</value>
+    </property>
+    <property key="MSReligion">
+        <value xml:lang="en">Religion</value>
+        <value xml:lang="vi">Tôn giáo</value>
+    </property>
+    <property key="MSCaste">
+        <value xml:lang="en">Caste</value>
+        <value xml:lang="vi">Nghề nghiệp</value>
+    </property>
+    <property key="MSMale">
+		<value xml:lang="en">Male</value>
+		<value xml:lang="vi">Nam</value>
+	</property>
+	<property key="MSFemale">
+		<value xml:lang="en">Female</value>
+		<value xml:lang="vi">Nữ</value>
+	</property>
+	<property key="MSFilterchoosestring">
+        <value xml:lang="en">Please Choose:</value>
+        <value xml:lang="vi">Lựa chọn:</value>
+	</property>
+	<property key="MSCreate">
+        <value xml:lang="en">Create</value>
+        <value xml:lang="vi">Tạo</value>
+	</property>
+	<property key="MSFieldRequired">
+		<value xml:lang="en">Field required</value>
+		<value xml:lang="vi">Trường bắt buộc</value>
+	</property>
+	<property key="MSNotValid">
+		<value xml:lang="en">Not Valid</value>
+		<value xml:lang="vi">Không hợp lệ</value>
+	</property>
+	<property key="NeverMarried">
+		<value xml:lang="en">Never Married</value>
+		<value xml:lang="vi">Chưa kết hôn</value>
+	</property>
+	<property key="Divorced">
+		<value xml:lang="en">Divorced</value>
+		<value xml:lang="vi">Đã ly dị</value>
+	</property>
+	<property key="Widowed">
+		<value xml:lang="en">Widowed</value>
+		<value xml:lang="vi">Góa</value>
+	</property>
+	<property key="MSChargesForRegistration">
+		<value xml:lang="en">Charges for Registration</value>
+		<value xml:lang="vi">Phí đăng ký</value>
+	</property>
+	<property key="Monthly">
+		<value xml:lang="en">Monthly (50$)</value>
+		<value xml:lang="vi">Theo Tháng (50$)</value>
+	</property>
+	<property key="Yearly">
+		<value xml:lang="en">Yearly (500$)</value>
+		<value xml:lang="vi">Theo Năm (500$)</value>
+	</property>
+	<property key="CreateError">
+		<value xml:lang="en">Create Error</value>
+		<value xml:lang="vi">Tạo mới lôi</value>
+	</property>
+	<property key="CreateSuccess">
+		<value xml:lang="en">Create Success</value>
+		<value xml:lang="vi">Tạo mới thành công</value>
+	</property>
 </resource>

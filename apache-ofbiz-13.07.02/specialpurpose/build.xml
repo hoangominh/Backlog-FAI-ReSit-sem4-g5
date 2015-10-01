@@ -20,6 +20,13 @@
 
 <project name="OFBiz Special Purpose Applications Build" default="build" basedir=".">
     <import file="../macros.xml"/>
-    <filelist id="specialpurpose-builds" dir="specialpurpose"
-        files="ecommerce/build.xml"/>
+    <filelist id="specialpurpose-builds" dir="."
+        files="
+    	specialpurpose/MatrimonySite/build.xml
+    	"/>
+	<target name="build" depends="">
+        <echo message="[build] ========== Start Building Special Purpose (Compile) =========="/>
+        <iterate inheritall="false" filelist="specialpurpose-builds"/>
+        <echo message="[build] ========== Done Building Special Purpose (Compile) =========="/>
+    </target>
 </project>

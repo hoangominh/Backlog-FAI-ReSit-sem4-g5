@@ -10,5 +10,20 @@
             Dummy service to prevent empty files and syntax error - Remove when the 1st real service will be added here 
         </description>
     </service> 
-    
+    <service name="getGeoData" engine="java" invoke="getGeoData" location="com.g5.MatrimonyServices" auth="false">
+		<attribute name="geoTypeId" mode="IN" type="String" optional="false"/>
+		<attribute name="listGeo" mode="OUT" type="List" optional="true"/>
+	</service>
+    <service name="getCaste" engine="java" invoke="getCaste" location="com.g5.MatrimonyServices" auth="false">
+		<attribute name="listCaste" mode="OUT" type="List" optional="true"/>
+	</service>
+    <service name="createAccount" engine="java" invoke="createAccount" location="com.g5.MatrimonyServices" auth="false">
+		<auto-attributes mode="IN" entity-name="Person" optional="true"></auto-attributes>
+		<auto-attributes mode="IN" entity-name="UserLogin" optional="true"></auto-attributes>
+		<attribute name="city" mode="IN" type="String" optional="true"/>
+		<attribute name="contactNumber" mode="IN" type="String" optional="true"/>
+		<attribute name="payment" mode="IN" type="String" optional="false"/>
+		<attribute name="email" mode="IN" type="String" optional="false"/>
+		<override name="birthDate" type="Long" optional="true"></override>
+	</service>
 </services>

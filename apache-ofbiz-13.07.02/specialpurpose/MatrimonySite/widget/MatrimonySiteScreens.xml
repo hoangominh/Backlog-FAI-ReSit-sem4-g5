@@ -33,5 +33,38 @@
 			</widgets>
 		</section>
 	</screen>
-	
+	<screen name="SignUp">
+		<section>
+			<actions>
+			</actions>
+			<widgets>
+				<decorator-screen name="MatrimonySiteCommonDecorator" location="${parameters.mainDecoratorLocation}">
+					<decorator-section name="body">
+						<platform-specific>
+									<html>
+										<html-template location="component://MatrimonySite/webapp/MatrimonySite/home/signUp.ftl" />
+									</html>
+						</platform-specific>
+					</decorator-section>
+				</decorator-screen>
+			</widgets>
+		</section>
+	</screen>
+	<screen name="SignIn">
+		<section>
+			<actions>
+			</actions>
+			<widgets>
+				<decorator-screen name="MatrimonySiteCommonDecorator" location="${parameters.mainDecoratorLocation}">
+					<decorator-section name="body">
+						<platform-specific>
+									<html>
+										<html-template location="component://MatrimonySite/webapp/MatrimonySite/home/signIn.ftl" />
+									</html>
+						</platform-specific>
+					</decorator-section>
+				</decorator-screen>
+			</widgets>
+		</section>
+	</screen>
 </screens>

@@ -9,4 +9,18 @@
     <copyright></copyright>
     <version></version>
 
+	<entity entity-name="Caste" package-name="ms.caste" title="Caste of person">
+        <field name="casteId" type="id-ne"/>
+        <field name="casteName" type="long-varchar"/>
+        <prim-key field="casteId"/>
+    </entity>
+	
+	<extend-entity entity-name="Person">
+		<field name="motherTongue" type="long-varchar"/>
+		<field name="religion" type="long-varchar"/>
+		<field name="casteId" type="id-ne"/>
+		<relation rel-entity-name="Caste" type="one">
+			<key-map field-name="casteId"/>
+		</relation>
+	</extend-entity>
 </entitymodel>

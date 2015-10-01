@@ -37,7 +37,8 @@
                                 <decorator-section-include name="body"/>
                             </widgets>
                             <fail-widgets>
-                                <label style="h3">${uiLabelMap.MatrimonySiteViewPermissionError}</label>
+                            	<decorator-section-include name="body"/>
+<!--                                 <label style="h3">${uiLabelMap.MatrimonySiteViewPermissionError}</label> -->
                             </fail-widgets>
                         </section>
                     </decorator-section>

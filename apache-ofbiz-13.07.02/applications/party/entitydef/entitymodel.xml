@@ -2739,7 +2739,7 @@ under the License.
       <field name="height" type="floating-point"></field>
       <field name="weight" type="floating-point"></field>
       <field name="mothersMaidenName" type="long-varchar" encrypt="true"></field>
-      <field name="maritalStatus" type="indicator"></field>
+      <field name="maritalStatus" type="long-varchar"></field>
       <field name="socialSecurityNumber" type="long-varchar" encrypt="true"></field>
       <field name="passportNumber" type="long-varchar" encrypt="true"></field>
       <field name="passportExpireDate" type="date"></field>

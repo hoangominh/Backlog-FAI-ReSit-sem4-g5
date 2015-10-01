@@ -1,4 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <entity-engine-xml>
-
+	<!-- 	Geo data -->
+	<Geo abbreviation="VNM" geoCode="VN" geoId="VNM" geoName="Việt Nam" geoTypeId="COUNTRY" codeNumber="84" />
+	<Geo abbreviation="VN-HN" geoCode="VN-HN" geoId="VN-HN" geoName="Hà Nội" geoTypeId="PROVINCE"/>
+    <Geo abbreviation="VN-HCM" geoCode="VN-HCM" geoId="VN-HCM" geoName="Hồ Chí Minh" geoTypeId="PROVINCE"/>
+    <GeoAssoc geoId="VNM" geoIdTo="VN-HN" geoAssocTypeId="REGIONS"></GeoAssoc>
+	<GeoAssoc geoId="VNM" geoIdTo="VN-HCM" geoAssocTypeId="REGIONS"></GeoAssoc>
+	<!-- 	Geo data -->
+	<!-- 	Caste data -->
+	<Caste casteId="Accountant" casteName="Accountant" />
+	<Caste casteId="Architect" casteName="Architect" />
+	<Caste casteId="Doctor" casteName="Doctor" />
+	<Caste casteId="Developer" casteName="Developer" />
+	<Caste casteId="Farmer" casteName="Farmer" />
+	<!-- 	Caste data -->
 </entity-engine-xml>
