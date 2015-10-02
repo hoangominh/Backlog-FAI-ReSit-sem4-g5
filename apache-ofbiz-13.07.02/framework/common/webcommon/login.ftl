@@ -17,6 +17,8 @@ specific language governing permissions and limitations
 under the License.
 -->
 
+<a href="SignUp">${StringUtil.wrapString(uiLabelMap.MSSignUp)}</a>
+
 <#if requestAttributes.uiLabelMap?exists><#assign uiLabelMap = requestAttributes.uiLabelMap></#if>
 <#assign useMultitenant = Static["org.ofbiz.base.util.UtilProperties"].getPropertyValue("general.properties", "multitenant")>
 

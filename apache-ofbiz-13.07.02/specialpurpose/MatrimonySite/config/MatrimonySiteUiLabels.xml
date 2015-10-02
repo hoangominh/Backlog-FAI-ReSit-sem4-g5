@@ -93,11 +93,11 @@
         <value xml:lang="en">Caste</value>
         <value xml:lang="vi">Nghề nghiệp</value>
     </property>
-    <property key="MSMale">
+    <property key="M">
 		<value xml:lang="en">Male</value>
 		<value xml:lang="vi">Nam</value>
 	</property>
-	<property key="MSFemale">
+	<property key="F">
 		<value xml:lang="en">Female</value>
 		<value xml:lang="vi">Nữ</value>
 	</property>
@@ -108,6 +108,10 @@
 	<property key="MSCreate">
         <value xml:lang="en">Create</value>
         <value xml:lang="vi">Tạo</value>
+	</property>
+	<property key="MSUpdate">
+        <value xml:lang="en">Update</value>
+        <value xml:lang="vi">Cập nhật</value>
 	</property>
 	<property key="MSFieldRequired">
 		<value xml:lang="en">Field required</value>
@@ -156,5 +160,17 @@
 	<property key="Logout">
 		<value xml:lang="en">Logout</value>
 		<value xml:lang="vi">Đăng xuất</value>
+	</property>
+	<property key="MSAvatar">
+		<value xml:lang="en">MSAvatar</value>
+		<value xml:lang="vi">Hình đại diện</value>
+	</property>
+	<property key="MSProfile">
+		<value xml:lang="en">Profile</value>
+		<value xml:lang="vi">Thông tin cá nhân</value>
+	</property>
+	<property key="MSUpdateProfile">
+		<value xml:lang="en">Update Profile</value>
+		<value xml:lang="vi">Cập nhật thông tin cá nhân</value>
 	</property>
 </resource>

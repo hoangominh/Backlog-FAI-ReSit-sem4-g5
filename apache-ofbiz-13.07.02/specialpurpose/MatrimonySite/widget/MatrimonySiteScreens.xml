@@ -23,11 +23,25 @@
 			<widgets>
 				<decorator-screen name="MatrimonySiteCommonDecorator" location="${parameters.mainDecoratorLocation}">
 					<decorator-section name="body">
-						<platform-specific>
+						<section>
+                            <condition>
+                                <if-has-permission permission="MATRIMONY" action="_VIEW"/>
+                            </condition>
+                            <widgets>
+                                <platform-specific>
 									<html>
-										<html-template location="component://MatrimonySite/webapp/MatrimonySite/home/home.ftl" />
+										<html-template location="component://MatrimonySite/webapp/MatrimonySite/home/timeLine.ftl" />
 									</html>
-						</platform-specific>
+								</platform-specific>
+                            </widgets>
+                            <fail-widgets>
+                            		<platform-specific>
+										<html>
+											<html-template location="component://MatrimonySite/webapp/MatrimonySite/home/home.ftl" />
+										</html>
+									</platform-specific>
+                            </fail-widgets>
+                        </section>
 					</decorator-section>
 				</decorator-screen>
 			</widgets>
@@ -60,6 +74,40 @@
 						<platform-specific>
 									<html>
 										<html-template location="component://MatrimonySite/webapp/MatrimonySite/home/timeLine.ftl" />
+									</html>
+						</platform-specific>
+					</decorator-section>
+				</decorator-screen>
+			</widgets>
+		</section>
+	</screen>
+	<screen name="Profile">
+		<section>
+			<actions>
+			</actions>
+			<widgets>
+				<decorator-screen name="MatrimonySiteCommonDecorator" location="${parameters.mainDecoratorLocation}">
+					<decorator-section name="body">
+						<platform-specific>
+									<html>
+										<html-template location="component://MatrimonySite/webapp/MatrimonySite/home/profile.ftl" />
+									</html>
+						</platform-specific>
+					</decorator-section>
+				</decorator-screen>
+			</widgets>
+		</section>
+	</screen>
+	<screen name="UpdateProfile">
+		<section>
+			<actions>
+			</actions>
+			<widgets>
+				<decorator-screen name="MatrimonySiteCommonDecorator" location="${parameters.mainDecoratorLocation}">
+					<decorator-section name="body">
+						<platform-specific>
+									<html>
+										<html-template location="component://MatrimonySite/webapp/MatrimonySite/home/updateProfile.ftl" />
 									</html>
 						</platform-specific>
 					</decorator-section>

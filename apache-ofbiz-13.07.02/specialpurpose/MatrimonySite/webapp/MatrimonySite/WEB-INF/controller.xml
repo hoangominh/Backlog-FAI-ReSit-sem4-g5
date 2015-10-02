@@ -38,6 +38,16 @@
 		<response name="success" type="view" value="TimeLine" />
 	</request-map>
 	
+    <request-map uri="Profile">
+		<security https="true" auth="true" />
+		<response name="success" type="view" value="Profile" />
+	</request-map>
+	
+    <request-map uri="UpdateProfile">
+		<security https="true" auth="true" />
+		<response name="success" type="view" value="UpdateProfile" />
+	</request-map>
+	
 	<request-map uri="getGeoData">
 	 	<security https="false" auth="false"/>
 	 	<event type="service" invoke="getGeoData"></event>
@@ -56,10 +66,18 @@
 	 	<response name="success" type="request" value="json"></response>
 		<response name="error" type="request" value="json"></response>
  	</request-map>
+	<request-map uri="loadProfile">
+	 	<security https="false" auth="false"/>
+	 	<event type="service" invoke="loadProfile"></event>
+	 	<response name="success" type="request" value="json"></response>
+		<response name="error" type="request" value="json"></response>
+ 	</request-map>
 	
     <!-- View Mappings -->
     <view-map name="main" type="screen" page="component://MatrimonySite/widget/MatrimonySiteScreens.xml#main"/>
     <view-map name="Home" type="screen" page="component://MatrimonySite/widget/MatrimonySiteScreens.xml#Home"/>
     <view-map name="SignUp" type="screen" page="component://MatrimonySite/widget/MatrimonySiteScreens.xml#SignUp"/>
     <view-map name="TimeLine" type="screen" page="component://MatrimonySite/widget/MatrimonySiteScreens.xml#TimeLine"/>
+    <view-map name="Profile" type="screen" page="component://MatrimonySite/widget/MatrimonySiteScreens.xml#Profile"/>
+    <view-map name="UpdateProfile" type="screen" page="component://MatrimonySite/widget/MatrimonySiteScreens.xml#UpdateProfile"/>
 </site-conf>

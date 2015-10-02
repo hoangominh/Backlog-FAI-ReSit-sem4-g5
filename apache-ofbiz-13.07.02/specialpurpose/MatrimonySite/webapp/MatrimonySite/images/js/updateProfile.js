@@ -5,9 +5,7 @@ if (typeof (BaseLayer) == "undefined") {
 	var BaseLayer = (function() {
 		var initValidator = function() {
 			$('#signUp').jqxValidator({
-			    rules: [{ input: '#txtUsername', message: multiLang.FieldRequired, action: 'change, blur', rule: 'required'},
-			            { input: '#txtEmailID', message: multiLang.FieldRequired, action: 'change, blur', rule: 'required'},
-			            { input: '#txtPassword', message: multiLang.FieldRequired, action: 'change, blur', rule: 'required'},
+			    rules: [{ input: '#txtEmailID', message: multiLang.FieldRequired, action: 'change, blur', rule: 'required'},
 			            { input: '#txtLastName', message: multiLang.FieldRequired, action: 'change, blur', rule: 'required'},
 			            { input: '#txtFirstName', message: multiLang.FieldRequired, action: 'change, blur', rule: 'required'},
 			            { input: '#txtContactNumber', message: multiLang.FieldRequired, action: 'change, blur', rule: 'required'},
@@ -40,15 +38,6 @@ if (typeof (BaseLayer) == "undefined") {
 		                		return false;
 		                	}
 		                },
-		                { input: '#txtChargesForRegistration', message: multiLang.FieldRequired, action: 'change, open', 
-		                	rule: function (input, commit) {
-		                		var value = input.val();
-		                		if (value) {
-		                			return true;
-		                		}
-		                		return false;
-		                	}
-		                },
 		                { input: '#txtGender', message: multiLang.FieldRequired, action: 'change, open', 
 		                	rule: function (input, commit) {
 		                		var value = input.val();
@@ -61,37 +50,85 @@ if (typeof (BaseLayer) == "undefined") {
 			});
 		};
 		var handlerEvents = function() {
-			$("#btnCreate").click(function () {
+			$("#btnUpdate").click(function () {
 			    if ($('#signUp').jqxValidator('validate')) {
 			    	var totalData = new Object();
-			    	totalData = _.extend(AccountLayer.getValue(), BasicLayer.getValue(), PaymentLayer.getValue());
+			    	totalData = _.extend(AccountLayer.getValue(), BasicLayer.getValue());
 			    	DataAccess.execute({
 							url: "createAccount",
 							data: totalData})
 			    }
 			});
 		};
+		var loadProfile = function() {
+			var data = DataAccess.getData({
+						url: "loadProfile",
+						data: {},
+						source: "profile"});
+			AccountLayer.setValue(data);
+			BasicLayer.setValue(data);
+		};
 		return {
 			init: function() {
+				AccountLayer.init();
 				BasicLayer.init();
-				PaymentLayer.init();
 				initValidator();
 				handlerEvents();
-			}
+				loadProfile();
+			},
+			loadProfile: loadProfile
 		}
 	})();
 }
 if (typeof (AccountLayer) == "undefined") {
 	var AccountLayer = (function() {
+		var handlerEvents = function() {
+			$("#imagePreview").click(function() {
+				$("#txtFile").click();
+			});
+			$("#txtFile").change(function(){
+			    readURL(this);
+			});
+		};
+		var readURL = function(input) {
+			if (input.files && input.files[0]) {
+		        var reader = new FileReader();
+		        reader.onload = function (e) {
+		            $('#imagePreview').attr('src', e.target.result);
+		        }
+		        reader.readAsDataURL(input.files[0]);
+		    }
+		}
+		var getFileImage = function() {
+			if ($('#txtFile').val()) {
+	    		var imageName = $('#txtFile').prop('files')[0].name;
+				var hashName = imageName.split(".");
+				var extended = hashName.pop().toLowerCase();
+				if (extended == "jpg" || extended == "jpeg" || extended == "gif" || extended == "png") {
+					var form_data= new FormData();
+					form_data.append("uploadedFile", $('#txtFile').prop('files')[0]);
+					return form_data;
+				}
+			}
+		};
 		var getValue = function() {
 			var value = new Object();
-			value.userLoginId = $("#txtUsername").val();
 			value.email = $("#txtEmailID").val();
-			value.currentPassword = $("#txtPassword").val();
 			return value;
 		};
+		var setValue = function(data) {
+			if (!_.isEmpty(data)) {
+				$("#txtEmailID").val(data.email);
+				$("#txtUsername").text(data.userLoginId);
+			}
+		};
 		return {
-			getValue: getValue
+			init: function() {
+				handlerEvents();
+			},
+			getValue: getValue,
+			setValue: setValue,
+			getFileImage: getFileImage
 		};
 	})();
 }
@@ -157,47 +194,31 @@ if (typeof (BasicLayer) == "undefined") {
 			value.maritalStatus = $("#txtMaritalStatus").jqxDropDownList('val');
 			return value;
 		};
+		var setValue = function(data) {
+			if (!_.isEmpty(data)) {
+				$("#txtFirstName").val(data.firstName);
+				$("#txtMiddleName").val(data.middleName);
+				$("#txtLastName").val(data.lastName);
+				if (data.birthDate) {
+					$("#txtBirthDate").jqxDateTimeInput('setDate', new Date(data.birthDate));
+				}
+				$("#txtGender").jqxDropDownList('val', data.gender);
+				$("#txtHeight").jqxNumberInput('val', data.height);
+				$("#txtContactNumber").val(data.contactNumber);
+				$("#txtCity").jqxDropDownList('val', data.city);
+				$("#txtMotherTongue").val(data.motherTongue);
+				$("#txtReligion").val(data.religion);
+				$("#txtCaste").jqxDropDownList('val', data.casteId);
+				$("#txtMaritalStatus").jqxDropDownList('val', data.maritalStatus);
+			}
+		};
 		return {
 			init: function() {
 				initJqxElements();
 				handlerEvents();
 			},
-			getValue: getValue
-		};
-	})();
-}
-if (typeof (PaymentLayer) == "undefined") {
-	var PaymentLayer = (function() {
-		var initJqxElements = function() {
-			var listPayment = [{value: 'Monthly', label: multiLang.Monthly}, {value: 'Yearly', label: multiLang.Yearly}];
-			$("#txtChargesForRegistration").jqxDropDownList({ theme: 'energyblue', width: 162, height: 28, source: listPayment,
-				displayMember: "label", valueMember: "value", placeHolder: multiLang.filterchoosestring, autoDropDownHeight: true});
-		};
-		var getValue = function() {
-			var value = new Object();
-			value.payment = $("#txtChargesForRegistration").jqxDropDownList('val');
-			var thruDate;
-			var currentDate = new Date().getTime();
-			switch (value.payment) {
-			case "Monthly":
-				thruDate = (new Date(86400000 * 30 + currentDate)).getTime();
-				break;
-			case "Yearly":
-				thruDate = (new Date(86400000 * 365 + currentDate)).getTime();
-				break;
-			default:
-				break;
-			}
-			if (thruDate) {
-				value.thruDate = thruDate;
-			}
-			return value;
-		};
-		return {
-			init: function() {
-				initJqxElements();
-			},
-			getValue: getValue
+			getValue: getValue,
+			setValue: setValue
 		};
 	})();
 }

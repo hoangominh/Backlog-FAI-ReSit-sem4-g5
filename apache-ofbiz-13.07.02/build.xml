@@ -1369,6 +1369,9 @@ under the License.
         </java>
     </target>
 
+	<target name="restart-debug" description="Restart in debugging mode OFBiz" depends="stop,build,start-debug">
+	</target>
+	
     <!-- ================================================================== -->
     <!-- Old tasks.                                                         -->
     <!-- ================================================================== -->

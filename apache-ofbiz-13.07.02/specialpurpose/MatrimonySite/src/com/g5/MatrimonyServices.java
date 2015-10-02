@@ -2,6 +2,7 @@ package com.g5;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.ofbiz.base.crypto.HashCrypt;
@@ -59,9 +60,14 @@ public class MatrimonyServices {
 		Delegator delegator = ctx.getDelegator();
 		LocalDispatcher dispatcher = ctx.getDispatcher();
 		Long birthDateL = (Long) context.get("birthDate");
+		Long thruDateL = (Long) context.get("thruDate");
 		java.sql.Date birthDate = null;
+		java.sql.Date thruDate = null;
 		if (UtilValidate.isNotEmpty(birthDateL)) {
 			birthDate = new java.sql.Date(birthDateL);
+		}
+		if (UtilValidate.isNotEmpty(thruDateL)) {
+			thruDate = new java.sql.Date(thruDateL);
 		}
 		boolean beganTx = TransactionUtil.begin(7200);
 		try {
@@ -112,6 +118,14 @@ public class MatrimonyServices {
 //			createPartyContactMechPurpose POSTAL_ADDRESS
 			dispatcher.runSync("createPartyContactMechPurpose",
 					UtilMisc.toMap("partyId", partyId, "contactMechId", contactMechId, "contactMechPurposeTypeId", "PRIMARY_LOCATION", "userLogin", userLogin));
+			GenericValue admin = delegator.findOne("UserLogin", UtilMisc.toMap("userLoginId", "admin"), false);
+//			createPartyRole CUSTOMER for customer
+			dispatcher.runSync("createPartyRole",
+					UtilMisc.toMap("partyId", partyId, "roleTypeId", "CUSTOMER", "userLogin", admin));
+//			createPartyRelationship between person and corporation
+				dispatcher.runSync("createPartyRelationship",
+						UtilMisc.toMap("partyIdFrom", "Company", "partyIdTo", partyId, "roleTypeIdFrom", "INTERNAL_ORGANIZATIO",
+								"roleTypeIdTo", "CUSTOMER", "partyRelationshipTypeId", "CUSTOMER_REL", "thruDate", thruDate, "userLogin", admin));
 		} catch (Exception e) {
 			TransactionUtil.rollback(beganTx, e.getMessage(), e);
 			e.printStackTrace();
@@ -129,4 +143,84 @@ public class MatrimonyServices {
 
         return hashType;
     }
+	public static Map<String, Object> loadProfile(DispatchContext ctx, Map<String, ? extends Object> context)
+			throws GenericEntityException {
+		Map<String, Object> result = FastMap.newInstance();
+		Map<String, Object> profile = FastMap.newInstance();
+		Delegator delegator = ctx.getDelegator();
+		Locale locale = (Locale) context.get("locale");
+		GenericValue userLogin = (GenericValue) context.get("userLogin");
+		String partyId = (String) context.get("partyId");
+		if (UtilValidate.isEmpty(partyId)) {
+			partyId = userLogin.getString("partyId");
+		}
+//		get basic info
+		GenericValue person = delegator.findOne("Person", UtilMisc.toMap("partyId", partyId), false);
+		
+		profile.put("firstName", person.getString("firstName"));
+		profile.put("middleName", person.getString("middleName"));
+		profile.put("lastName", person.getString("lastName"));
+		profile.put("gender", person.getString("gender"));
+		profile.put("genderDetails", UtilProperties.getMessage(resource, person.getString("gender"), locale));
+		profile.put("maritalStatus", person.getString("maritalStatus"));
+		profile.put("maritalStatusDetails", UtilProperties.getMessage(resource, person.getString("maritalStatus"), locale));
+		profile.put("motherTongue", person.getString("motherTongue"));
+		profile.put("religion", person.getString("religion"));
+		profile.put("casteId", person.getString("casteId"));
+		profile.put("payment", person.getString("comments"));
+		profile.put("birthDate", person.getDate("birthDate").toString());
+		profile.put("height", person.getDouble("height"));
+		
+//		get account info
+		List<GenericValue> userLogins = delegator.findList("UserLogin", 
+				EntityCondition.makeCondition(UtilMisc.toMap("partyId", partyId)), UtilMisc.toSet("userLoginId"), null, null, false);
+		if (UtilValidate.isNotEmpty(userLogins)) {
+			profile.putAll(EntityUtil.getFirst(userLogins));
+		}
+//		get expired date account
+		List<GenericValue> partyRelationships = delegator.findList("PartyRelationship", 
+				EntityCondition.makeCondition(UtilMisc.toMap("partyIdFrom", "Company", "partyIdTo", partyId, "roleTypeIdFrom", "INTERNAL_ORGANIZATIO",
+						"roleTypeIdTo", "CUSTOMER", "partyRelationshipTypeId", "CUSTOMER_REL")), null, null, null, false);
+		if (UtilValidate.isNotEmpty(partyRelationships)) {
+			profile.put("thruDate", EntityUtil.getFirst(partyRelationships).getTimestamp("thruDate"));
+		}
+//		get contact info
+		List<EntityCondition> conditions = FastList.newInstance();
+		conditions.add(EntityCondition.makeCondition(EntityUtil.getFilterByDateExpr()));
+		conditions.add(EntityCondition.makeCondition(UtilMisc.toMap("partyId", partyId)));
+		List<GenericValue> partyContactMechPurposes = delegator.findList("PartyContactMechPurpose", 
+				EntityCondition.makeCondition(conditions), null, null, null, false);
+		for (GenericValue x : partyContactMechPurposes) {
+			String contactMechPurposeTypeId = x.getString("contactMechPurposeTypeId");
+			String contactMechId = x.getString("contactMechId");
+			switch (contactMechPurposeTypeId) {
+			case "PRIMARY_PHONE":
+				GenericValue telecomNumber = delegator.findOne("TelecomNumber", UtilMisc.toMap("contactMechId", contactMechId), false);
+				if (UtilValidate.isNotEmpty(telecomNumber)) {
+					profile.put("contactNumber", telecomNumber.getString("contactNumber"));
+				}
+				break;
+			case "PRIMARY_EMAIL":
+				GenericValue contactMech = delegator.findOne("ContactMech", UtilMisc.toMap("contactMechId", contactMechId), false);
+				if (UtilValidate.isNotEmpty(contactMech)) {
+					profile.put("email", contactMech.getString("infoString"));
+				}
+				break;
+			case "PRIMARY_LOCATION":
+				GenericValue postalAddress = delegator.findOne("PostalAddress", UtilMisc.toMap("contactMechId", contactMechId), false);
+				if (UtilValidate.isNotEmpty(postalAddress)) {
+					profile.put("city", postalAddress.getString("stateProvinceGeoId"));
+					GenericValue geo = delegator.findOne("Geo", UtilMisc.toMap("geoId", postalAddress.getString("stateProvinceGeoId")), false);
+					if (UtilValidate.isNotEmpty(geo)) {
+						profile.put("cityDetails", geo.getString("geoName"));
+					}
+				}
+				break;
+			default:
+				break;
+			}
+		}
+		result.put("profile", profile);
+		return result;
+	}
 }

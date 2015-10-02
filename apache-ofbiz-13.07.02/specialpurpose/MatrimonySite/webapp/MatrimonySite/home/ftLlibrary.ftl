@@ -2,6 +2,7 @@
 <script type="text/javascript" src="/MatrimonySite/images/jqwidgets/jqwidgets/jqx-all.js"></script>
 <script type="text/javascript" src="/MatrimonySite/images/js/Underscore1.8.3.js"></script>
 <script type="text/javascript" src="/MatrimonySite/images/js/notify.js"></script>
+<script type="text/javascript" src="/MatrimonySite/images/js/miscUtil.js"></script>
 
 <link rel="stylesheet" type="text/css" href="/MatrimonySite/images/css/matrimonySite.css">
 <link rel="stylesheet" type="text/css" href="/MatrimonySite/images/css/bootstrap-responsive.min.css">
@@ -11,8 +12,8 @@
 
 <script>
 	var multiLang = {
-			male: "${StringUtil.wrapString(uiLabelMap.MSMale)}",
-			female: "${StringUtil.wrapString(uiLabelMap.MSFemale)}",
+			male: "${StringUtil.wrapString(uiLabelMap.M)}",
+			female: "${StringUtil.wrapString(uiLabelMap.F)}",
 			filterchoosestring: "${StringUtil.wrapString(uiLabelMap.MSFilterchoosestring)}",
 			FieldRequired: "${StringUtil.wrapString(uiLabelMap.MSFieldRequired)}",
 			NotValid: "${StringUtil.wrapString(uiLabelMap.MSNotValid)}",

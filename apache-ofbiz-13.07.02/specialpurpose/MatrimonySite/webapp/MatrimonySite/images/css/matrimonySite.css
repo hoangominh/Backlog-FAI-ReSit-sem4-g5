@@ -26,6 +26,11 @@
 .text-right {
     margin-top: 5px;
 }
+.green {
+    margin-top: 4px;
+    font-size: 17px;
+    color: blue;
+}
 .medium-size-input {
 	    width: 150px;
 }

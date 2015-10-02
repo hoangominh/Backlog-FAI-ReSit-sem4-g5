@@ -1,10 +1,10 @@
 <#include "component://MatrimonySite/webapp/MatrimonySite/home/ftLlibrary.ftl"/>
 <#include "component://MatrimonySite/webapp/MatrimonySite/home/decorator.ftl"/>
-<script type="text/javascript" src="/MatrimonySite/images/js/signUp.js"></script>
+<script type="text/javascript" src="/MatrimonySite/images/js/updateProfile.js"></script>
 <head>
-	<title>MatrimonySite: ${StringUtil.wrapString(uiLabelMap.MSSignUp)}</title>
+	<title>MatrimonySite: ${StringUtil.wrapString(uiLabelMap.MSProfile)}</title>
 </head>
-<a href="TimeLine">${StringUtil.wrapString(uiLabelMap.MSSignIn)}</a>
+<a href="TimeLine">${StringUtil.wrapString(uiLabelMap.TimeLine)}</a>
 <div id="signUp">
 	<div class="span12 no-left-margin boder-all-profile">
 	<span class="text-header">${uiLabelMap.MSAccountDetails}</span>
@@ -12,15 +12,24 @@
 			<div class='span8'>
 				<div class='row-fluid margin-bottom10'>
 					<div class='span5'><label class='text-right asterisk'>${uiLabelMap.MSUsername}</label></div>
-					<div class='span7'><input type='text' id="txtUsername" /></div>
+					<div class='span7'><label class='green' id="txtUsername">xxx</label></div>
 				</div>
 				<div class='row-fluid margin-bottom10'>
 					<div class='span5'><label class='text-right asterisk'>${uiLabelMap.MSEmailID}</label></div>
 					<div class='span7'><input type='text' id="txtEmailID" /></div>
 				</div>
+			</div>
+			<div class='span4'>
 				<div class='row-fluid margin-bottom10'>
-					<div class='span5'><label class='text-right asterisk'>${uiLabelMap.MSPassword}</label></div>
-					<div class='span7'><input type='password' id="txtPassword" /></div>
+					<div class='span4'><label class='text-right'>${uiLabelMap.MSAvatar}</label></div>
+					<div class='span7'>
+						<div id="productImageViewerTotal">
+							<img src="/MatrimonySite/images/image/noavatar.jpg" id="imagePreview" height="180" width="95%" style="max-width: none;"/>
+						</div>
+					</div>
+					<div class='span1 no-left-margin'>
+						<input type="file" id="txtFile" style="visibility:hidden;" />
+					</div>
 				</div>
 			</div>
 		</div>
@@ -85,20 +94,8 @@
 			</div>
 		</div>
 	</div>
-	
-	<div class="span12 no-left-margin boder-all-profile">
-	<span class="text-header">${uiLabelMap.MSChargesForRegistration}</span>
-		<div class='row-fluid'>
-			<div class='span4'>
-				<div class='row-fluid margin-bottom10'>
-					<div class='span5'><label class='text-right asterisk'>${uiLabelMap.MSChargesForRegistration}</label></div>
-					<div class='span7'><div id="txtChargesForRegistration"></div></div>
-				</div>
-			</div>
-		</div>
-	</div>
 </div>
 
 <div class="span12 margin-top10">
-	<button id='btnCreate' class="btn btn-primary"><i class='icon-ok'></i>${uiLabelMap.MSCreate}</button>
+	<button id='btnUpdate' class="btn btn-primary"><i class='icon-ok'></i>${uiLabelMap.MSUpdate}</button>
 </div>
