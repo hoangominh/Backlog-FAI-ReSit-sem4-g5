@@ -364,8 +364,9 @@ public class MatrimonyServices {
 		List<Map<String, Object>> listOncePage = FastList.newInstance();
 		int subPage = 0;
 		for (GenericValue x : person) {
-			String statusId = (String) getStatusRelationShip(delegator, userLoginPartyId, x.getString("partyId")).get("statusId");
-			String partyIdTo = (String) getStatusRelationShip(delegator, userLoginPartyId, x.getString("partyId")).get("partyIdTo");
+			Map<String, Object> statusRelationShip = getStatusRelationShip(delegator, userLoginPartyId, x.getString("partyId"));
+			String statusId = (String) statusRelationShip.get("statusId");
+			String partyIdTo = (String) statusRelationShip.get("partyIdTo");
 			if (UtilValidate.isNotEmpty(statusId)) {
 				if (UtilMisc.toList("BLOCKING", "ACCEPTED", "CANCEL").contains(statusId) || userLoginPartyId.equals(partyIdTo)) {
 					continue;
@@ -488,7 +489,7 @@ public class MatrimonyServices {
 				EntityCondition.makeCondition(UtilMisc.toMap("partyIdFrom", partyIdTo, "partyIdTo", partyIdFrom))
 				), EntityJoinOperator.OR));
 		List<GenericValue> partyRelationships = delegator.findList("PartyRelationship",
-				EntityCondition.makeCondition(conditions), UtilMisc.toSet("statusId", "fromDate"), null, null, false);
+				EntityCondition.makeCondition(conditions), UtilMisc.toSet("statusId", "fromDate", "partyIdFrom", "partyIdTo"), null, null, false);
 		if (UtilValidate.isNotEmpty(partyRelationships)) {
 			result.put("partyIdFrom", EntityUtil.getFirst(partyRelationships).getString("partyIdFrom"));
 			result.put("partyIdTo", EntityUtil.getFirst(partyRelationships).getString("partyIdTo"));

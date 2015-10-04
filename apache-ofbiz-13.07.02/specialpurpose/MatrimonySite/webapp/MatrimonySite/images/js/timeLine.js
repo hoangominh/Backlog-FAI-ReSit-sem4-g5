@@ -231,6 +231,7 @@ if (typeof (FriendRequestLayer) == "undefined") {
 		    };
 		    var dataAdapter = new $.jqx.dataAdapter(source);
 		    $("#friendRequestDataTable").jqxDataTable({source: dataAdapter});
+		    Friends.reloadDataTable();
 		};
 		return {
 			init: function() {
