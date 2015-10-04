@@ -63,7 +63,7 @@
 					<div class='span5'><label class='text-right'>${uiLabelMap.MSBirthDate}:</label></div>
 					<div class='span7'><label class='green' id="txtBirthDate"></label></div>
 				</div>
-				<div class='row-fluid' style="margin-top: 10px;">
+				<div class='row-fluid'>
 					<div class='span5'><label class='text-right'>${uiLabelMap.MSContactNumber}:</label></div>
 					<div class='span7'><label class='green' id="txtContactNumber"></label></div>
 				</div>
@@ -81,11 +81,11 @@
 					<div class='span5'><label class='text-right'>${uiLabelMap.MSGender}:</label></div>
 					<div class='span7'><label class='green' id="txtGender"></label></div>
 				</div>
-				<div class='row-fluid' style="margin-top: 10px;">
+				<div class='row-fluid'>
 					<div class='span5'><label class='text-right'>${uiLabelMap.MSCity}:</label></div>
 					<div class='span7'><label class='green' id="txtCity"></label></div>
 				</div>
-				<div class='row-fluid' style="margin-top: 10px;">
+				<div class='row-fluid'>
 					<div class='span5'><label class='text-right'>${uiLabelMap.MSCaste}:</label></div>
 					<div class='span7'><label class='green' id="txtCaste"></label></div>
 				</div>
@@ -99,7 +99,7 @@
 					<div class='span5'><label class='text-right'>${uiLabelMap.MSHeight}:</label></div>
 					<div class='span7'><label class='green' id="txtHeight"></label></div>
 				</div>
-				<div class='row-fluid' style="margin-top: 10px;">
+				<div class='row-fluid'>
 					<div class='span5'><label class='text-right'>${uiLabelMap.MSMotherTongue}:</label></div>
 					<div class='span7'><label class='green' id="txtMotherTongue"></label></div>
 				</div>
