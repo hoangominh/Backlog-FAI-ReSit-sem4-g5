@@ -29,7 +29,14 @@
 			UpdateError: "${StringUtil.wrapString(uiLabelMap.UpdateError)}",
 			UpdateSuccess: "${StringUtil.wrapString(uiLabelMap.UpdateSuccess)}",
 			MSFriendsMayKnow: "${StringUtil.wrapString(uiLabelMap.MSFriendsMayKnow)}",
+			MSFriendRequests: "${StringUtil.wrapString(uiLabelMap.MSFriendRequests)}",
 			MSCaste: "${StringUtil.wrapString(uiLabelMap.MSCaste)}",
+			MSAddFriend: "${StringUtil.wrapString(uiLabelMap.MSAddFriend)}",
+			MSFriendRequestSent: "${StringUtil.wrapString(uiLabelMap.MSFriendRequestSent)}",
+			CommonSubmit: "${StringUtil.wrapString(uiLabelMap.CommonSubmit)}",
+			MSCancel: "${StringUtil.wrapString(uiLabelMap.MSCancel)}",
+			MSMessage: "${StringUtil.wrapString(uiLabelMap.MSMessage)}",
+			MSViewProfile: "${StringUtil.wrapString(uiLabelMap.MSViewProfile)}",
 	};
 	var getLocalization = function () {
         var localizationobj = {};

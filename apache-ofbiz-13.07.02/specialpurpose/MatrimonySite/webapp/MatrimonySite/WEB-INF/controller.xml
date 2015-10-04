@@ -90,6 +90,36 @@
 	 	<response name="success" type="request" value="json"></response>
 		<response name="error" type="request" value="json"></response>
  	</request-map>
+	<request-map uri="loadFriendRequest">
+	 	<security https="true" auth="true"/>
+	 	<event type="service" invoke="loadFriendRequest"></event>
+	 	<response name="success" type="request" value="json"></response>
+		<response name="error" type="request" value="json"></response>
+ 	</request-map>
+	<request-map uri="loadFriends">
+	 	<security https="true" auth="true"/>
+	 	<event type="service" invoke="loadFriends"></event>
+	 	<response name="success" type="request" value="json"></response>
+		<response name="error" type="request" value="json"></response>
+ 	</request-map>
+	<request-map uri="addFriend">
+	 	<security https="true" auth="true"/>
+	 	<event type="service" invoke="addFriend"></event>
+	 	<response name="success" type="request" value="json"></response>
+		<response name="error" type="request" value="json"></response>
+ 	</request-map>
+	<request-map uri="acceptFriend">
+	 	<security https="true" auth="true"/>
+	 	<event type="service" invoke="acceptFriend"></event>
+	 	<response name="success" type="request" value="json"></response>
+		<response name="error" type="request" value="json"></response>
+ 	</request-map>
+	<request-map uri="cancelFriend">
+	 	<security https="true" auth="true"/>
+	 	<event type="service" invoke="cancelFriend"></event>
+	 	<response name="success" type="request" value="json"></response>
+		<response name="error" type="request" value="json"></response>
+ 	</request-map>
 	
     <!-- View Mappings -->
     <view-map name="main" type="screen" page="component://MatrimonySite/widget/MatrimonySiteScreens.xml#main"/>

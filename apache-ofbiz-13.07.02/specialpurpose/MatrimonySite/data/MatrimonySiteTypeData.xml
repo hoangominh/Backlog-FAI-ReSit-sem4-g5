@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <entity-engine-xml>
-
+	<StatusItem statusId="REQUESTED" statusTypeId="PARTY_REL_STATUS" statusCode="REQUESTED" sequenceId="11" description="Requested"/>
+	<StatusItem statusId="ACCEPTED" statusTypeId="PARTY_REL_STATUS" statusCode="ACCEPTED" sequenceId="11" description="Accepted"/>
+	<StatusItem statusId="BLOCKING" statusTypeId="PARTY_REL_STATUS" statusCode="BLOCKING" sequenceId="11" description="Blocking"/>
+	<StatusItem statusId="CANCEL" statusTypeId="PARTY_REL_STATUS" statusCode="CANCEL" sequenceId="11" description="Cancel"/>
+	
+	<RoleType roleTypeId="FRIEND" description="Friend"/>
 </entity-engine-xml>

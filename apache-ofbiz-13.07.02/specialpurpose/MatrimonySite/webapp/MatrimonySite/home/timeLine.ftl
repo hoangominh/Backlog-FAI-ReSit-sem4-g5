@@ -22,7 +22,7 @@ Hello customer
 
 <div class="container">
 	<button type="button" class="btn btn-info" data-toggle="collapse" data-target="#divFriendsMayKnow">${uiLabelMap.MSRelationshipcenter}</button>
-	<div id='divFriendsMayKnow' class="collapse in">
+	<div id='divFriendsMayKnow' class="collapse">
 		<div id='divOptions'>
 		<div>${uiLabelMap.MSOptions}</div>
 			<div>
@@ -68,4 +68,15 @@ Hello customer
 		<div id="friendsMayKnowDataTable"></div>
 	</div>
 </div>
-
+<div class="container">
+	<button type="button" class="btn btn-info" data-toggle="collapse" data-target="#divFriendRequest">${uiLabelMap.MSFriendRequests}</button>
+	<div id='divFriendRequest' class="collapse">
+		<div id="friendRequestDataTable"></div>
+	</div>
+</div>
+<div class="container">
+	<button type="button" class="btn btn-info" data-toggle="collapse" data-target="#divFriends">${uiLabelMap.MSFriends}</button>
+	<div id='divFriends' class="collapse in">
+		<div id="friendsDataTable"></div>
+	</div>
+</div>

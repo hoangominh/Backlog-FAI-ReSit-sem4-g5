@@ -274,4 +274,28 @@
 		<value xml:lang="en">Search</value>
 		<value xml:lang="vi">Tìm kiếm</value>
 	</property>
+	<property key="MSFriendRequests">
+		<value xml:lang="en">Friend requests</value>
+		<value xml:lang="vi">Lời mời kết bạn</value>
+	</property>
+	<property key="MSAddFriend">
+		<value xml:lang="en">Add friend</value>
+		<value xml:lang="vi">Kết bạn</value>
+	</property>
+	<property key="MSFriendRequestSent">
+		<value xml:lang="en">Friend request sent</value>
+		<value xml:lang="vi">Đã gửi lời mời kết bạn</value>
+	</property>
+	<property key="MSCancel">
+		<value xml:lang="en">Cancel</value>
+		<value xml:lang="vi">Hủy</value>
+	</property>
+	<property key="MSMessage">
+		<value xml:lang="en">Message</value>
+		<value xml:lang="vi">Tin nhắn</value>
+	</property>
+	<property key="MSViewProfile">
+		<value xml:lang="en">View Profile</value>
+		<value xml:lang="vi">Xem thông tin</value>
+	</property>
 </resource>

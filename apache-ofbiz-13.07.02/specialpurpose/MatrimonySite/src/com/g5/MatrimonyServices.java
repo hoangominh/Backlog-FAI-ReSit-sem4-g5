@@ -121,6 +121,9 @@ public class MatrimonyServices {
 			dispatcher.runSync("createPartyContactMechPurpose",
 					UtilMisc.toMap("partyId", partyId, "contactMechId", contactMechId, "contactMechPurposeTypeId", "PRIMARY_LOCATION", "userLogin", userLogin));
 			GenericValue admin = delegator.findOne("UserLogin", UtilMisc.toMap("userLoginId", "admin"), false);
+//			createPartyRole FRIEND for customer
+			dispatcher.runSync("createPartyRole",
+					UtilMisc.toMap("partyId", partyId, "roleTypeId", "FRIEND", "userLogin", admin));
 //			createPartyRole CUSTOMER for customer
 			dispatcher.runSync("createPartyRole",
 					UtilMisc.toMap("partyId", partyId, "roleTypeId", "CUSTOMER", "userLogin", admin));
@@ -334,7 +337,7 @@ public class MatrimonyServices {
 		String maritalStatus = (String) context.get("maritalStatus");
 		
 		List<Map<String, Object>> listFriendsMayKnow = FastList.newInstance();
-		List<String> allCustomerIds = getPartiesByRolesAndPartyFrom("Company", "INTERNAL_ORGANIZATIO", "CUSTOMER", delegator, true);
+		List<String> allCustomerIds = getPartiesByRolesAndPartyFromAndStatusRelationShip("Company", "INTERNAL_ORGANIZATIO", "CUSTOMER", delegator, true);
 //		TODO: now get friendIds by All customer but will get friendIds by conditions of user
 		List<String> friendIds = allCustomerIds;
 		friendIds.remove(userLoginPartyId);
@@ -357,24 +360,141 @@ public class MatrimonyServices {
 			conditions.add(EntityCondition.makeCondition("maritalStatus", EntityJoinOperator.EQUALS, maritalStatus));
 		}
 		List<GenericValue> person = delegator.findList("PersonAndCaste",
-				EntityCondition.makeCondition(conditions), UtilMisc.toSet("partyId", "partyFullName", "casteName", "gender"), UtilMisc.toList("partyFullName"), null, false);
+				EntityCondition.makeCondition(conditions), UtilMisc.toSet("partyId", "partyFullName", "casteName", "gender"), UtilMisc.toList("firstName"), null, false);
 		List<Map<String, Object>> listOncePage = FastList.newInstance();
+		int subPage = 0;
 		for (GenericValue x : person) {
+			String statusId = (String) getStatusRelationShip(delegator, userLoginPartyId, x.getString("partyId")).get("statusId");
+			String partyIdTo = (String) getStatusRelationShip(delegator, userLoginPartyId, x.getString("partyId")).get("partyIdTo");
+			if (UtilValidate.isNotEmpty(statusId)) {
+				if (UtilMisc.toList("BLOCKING", "ACCEPTED", "CANCEL").contains(statusId) || userLoginPartyId.equals(partyIdTo)) {
+					continue;
+				}
+			}
 			Map<String, Object> mapOncePage = FastMap.newInstance();
 			mapOncePage.putAll(x);
 //			FIXME: hardcode image url /MatrimonySite/images/image/noavatar.jpg
 			mapOncePage.put("avatar", "/MatrimonySite/images/image/noavatar.jpg");
 			mapOncePage.put("city", getCityByPartyId(delegator, x.getString("partyId")));
 			mapOncePage.put("genderDetails", UtilProperties.getMessage(resource, x.getString("gender"), locale));
-			if ((person.indexOf(x)%3) == 0) {
+			mapOncePage.put("statusId", statusId);
+			if ((subPage%3) == 0) {
+				subPage = 0;
 				listOncePage = FastList.newInstance();
 				Map<String, Object> mapFriendsMayKnow = FastMap.newInstance();
 				mapFriendsMayKnow.put("friends", listOncePage);
 				listFriendsMayKnow.add(mapFriendsMayKnow);
 			}
+			subPage += 1;
 			listOncePage.add(mapOncePage);
 		}
 		result.put("listFriendsMayKnow", listFriendsMayKnow);
+		return result;
+	}
+	public static Map<String, Object> listFriendRequest(DispatchContext ctx, Map<String, ? extends Object> context)
+			throws GenericEntityException, GenericServiceException {
+		Map<String, Object> result = FastMap.newInstance();
+		Delegator delegator = ctx.getDelegator();
+		Locale locale = (Locale) context.get("locale");
+		String userLoginPartyId = (String) context.get("userLoginPartyId");
+		List<Map<String, Object>> listFriendRequest = FastList.newInstance();
+		List<String> allCustomerIds = getPartiesByRolesAndPartyFromAndStatusRelationShip("Company", "INTERNAL_ORGANIZATIO", "CUSTOMER", delegator, true);
+//		TODO: now get friendIds by All customer but will get friendIds by conditions of user
+		List<String> friendIds = allCustomerIds;
+		friendIds.remove(userLoginPartyId);
+		List<EntityCondition> conditions = FastList.newInstance();
+		conditions.add(EntityCondition.makeCondition("partyId", EntityJoinOperator.IN, friendIds));
+		List<GenericValue> person = delegator.findList("PersonAndCaste",
+				EntityCondition.makeCondition(conditions), UtilMisc.toSet("partyId", "partyFullName", "casteName", "gender"), UtilMisc.toList("firstName"), null, false);
+		List<Map<String, Object>> listOncePage = FastList.newInstance();
+		int subPage = 0;
+		for (GenericValue x : person) {
+			Map<String, Object> statusRelationShip = getStatusRelationShip(delegator, x.getString("partyId"), userLoginPartyId);
+			String statusId = (String) statusRelationShip.get("statusId");
+			String partyIdTo = (String) statusRelationShip.get("partyIdTo");
+			if (!"REQUESTED".equals(statusId) || !userLoginPartyId.equals(partyIdTo)) {
+				continue;
+			}
+			Map<String, Object> mapOncePage = FastMap.newInstance();
+			mapOncePage.putAll(x);
+//			FIXME: hardcode image url /MatrimonySite/images/image/noavatar.jpg
+			mapOncePage.put("avatar", "/MatrimonySite/images/image/noavatar.jpg");
+			mapOncePage.put("city", getCityByPartyId(delegator, x.getString("partyId")));
+			mapOncePage.put("genderDetails", UtilProperties.getMessage(resource, x.getString("gender"), locale));
+			mapOncePage.put("statusId", statusId);
+			mapOncePage.put("fromDate", statusRelationShip.get("fromDate"));
+			if ((subPage%3) == 0) {
+				subPage = 0;
+				listOncePage = FastList.newInstance();
+				Map<String, Object> mapFriendRequest = FastMap.newInstance();
+				mapFriendRequest.put("friends", listOncePage);
+				listFriendRequest.add(mapFriendRequest);
+			}
+			subPage += 1;
+			listOncePage.add(mapOncePage);
+		}
+		result.put("listFriendRequest", listFriendRequest);
+		return result;
+	}
+	public static Map<String, Object> listFriends(DispatchContext ctx, Map<String, ? extends Object> context)
+			throws GenericEntityException, GenericServiceException {
+		Map<String, Object> result = FastMap.newInstance();
+		Delegator delegator = ctx.getDelegator();
+		Locale locale = (Locale) context.get("locale");
+		String userLoginPartyId = (String) context.get("userLoginPartyId");
+		List<Map<String, Object>> listFriends = FastList.newInstance();
+		List<String> friendIds = getPartiesByRolesAndPartyFromAndStatusRelationShip("Company", "INTERNAL_ORGANIZATIO", "CUSTOMER", delegator, true);
+		friendIds.remove(userLoginPartyId);
+		List<EntityCondition> conditions = FastList.newInstance();
+		conditions.add(EntityCondition.makeCondition("partyId", EntityJoinOperator.IN, friendIds));
+		List<GenericValue> person = delegator.findList("PersonAndCaste",
+				EntityCondition.makeCondition(conditions), UtilMisc.toSet("partyId", "partyFullName", "casteName", "gender"), UtilMisc.toList("firstName"), null, false);
+		List<Map<String, Object>> listOncePage = FastList.newInstance();
+		int subPage = 0;
+		for (GenericValue x : person) {
+			Map<String, Object> statusRelationShip = getStatusRelationShip(delegator, x.getString("partyId"), userLoginPartyId);
+			String statusId = (String) statusRelationShip.get("statusId");
+			if (!"ACCEPTED".equals(statusId)) {
+				continue;
+			}
+			Map<String, Object> mapOncePage = FastMap.newInstance();
+			mapOncePage.putAll(x);
+//			FIXME: hardcode image url /MatrimonySite/images/image/noavatar.jpg
+			mapOncePage.put("avatar", "/MatrimonySite/images/image/noavatar.jpg");
+			mapOncePage.put("city", getCityByPartyId(delegator, x.getString("partyId")));
+			mapOncePage.put("genderDetails", UtilProperties.getMessage(resource, x.getString("gender"), locale));
+			mapOncePage.put("statusId", statusId);
+			mapOncePage.put("fromDate", statusRelationShip.get("fromDate"));
+			if ((subPage%3) == 0) {
+				subPage = 0;
+				listOncePage = FastList.newInstance();
+				Map<String, Object> mapFriends = FastMap.newInstance();
+				mapFriends.put("friends", listOncePage);
+				listFriends.add(mapFriends);
+			}
+			subPage += 1;
+			listOncePage.add(mapOncePage);
+		}
+		result.put("listFriends", listFriends);
+		return result;
+	}
+	private static Map<String, Object> getStatusRelationShip(Delegator delegator, String partyIdFrom, String partyIdTo) throws GenericEntityException {
+		Map<String, Object> result = FastMap.newInstance();
+		List<EntityCondition> conditions = FastList.newInstance();
+		conditions.add(EntityCondition.makeCondition(EntityUtil.getFilterByDateExpr()));
+		conditions.add(EntityCondition.makeCondition(UtilMisc.toMap("roleTypeIdFrom", "FRIEND", "roleTypeIdTo", "FRIEND")));
+		conditions.add(EntityCondition.makeCondition(UtilMisc.toList(
+				EntityCondition.makeCondition(UtilMisc.toMap("partyIdFrom", partyIdFrom, "partyIdTo", partyIdTo)),
+				EntityCondition.makeCondition(UtilMisc.toMap("partyIdFrom", partyIdTo, "partyIdTo", partyIdFrom))
+				), EntityJoinOperator.OR));
+		List<GenericValue> partyRelationships = delegator.findList("PartyRelationship",
+				EntityCondition.makeCondition(conditions), UtilMisc.toSet("statusId", "fromDate"), null, null, false);
+		if (UtilValidate.isNotEmpty(partyRelationships)) {
+			result.put("partyIdFrom", EntityUtil.getFirst(partyRelationships).getString("partyIdFrom"));
+			result.put("partyIdTo", EntityUtil.getFirst(partyRelationships).getString("partyIdTo"));
+			result.put("statusId", EntityUtil.getFirst(partyRelationships).getString("statusId"));
+			result.put("fromDate", EntityUtil.getFirst(partyRelationships).getTimestamp("fromDate"));
+		}
 		return result;
 	}
 	private static List<String> getPartiesByCity(Delegator delegator, String stateProvinceGeoId) throws GenericEntityException {
@@ -386,8 +506,7 @@ public class MatrimonyServices {
 		conditions.add(EntityCondition.makeCondition("contactMechId", EntityJoinOperator.IN, contactMechIds));
 		conditions.add(EntityCondition.makeCondition("contactMechPurposeTypeId", EntityJoinOperator.EQUALS, "PRIMARY_LOCATION"));
 		List<GenericValue> partyContactMechPurposes = delegator.findList("PartyContactMechPurpose",
-				EntityCondition.makeCondition(conditions),
-				UtilMisc.toSet("partyId"), null, null, false);
+				EntityCondition.makeCondition(conditions), UtilMisc.toSet("partyId"), null, null, false);
 		if (UtilValidate.isNotEmpty(partyContactMechPurposes)) {
 			return EntityUtil.getFieldListFromEntityList(partyContactMechPurposes, "partyId", true);
 		}
@@ -411,7 +530,7 @@ public class MatrimonyServices {
 		}
 		return null;
 	}
-	public static List<String> getPartiesByRolesAndPartyFrom(String partyIdFrom, String roleTypeIdFrom, String roleTypeIdTo, Delegator delegator, boolean filterByDateExpr) throws GenericEntityException{
+	public static List<String> getPartiesByRolesAndPartyFromAndStatusRelationShip(String partyIdFrom, String roleTypeIdFrom, String roleTypeIdTo, Delegator delegator, boolean filterByDateExpr) throws GenericEntityException{
 		List<String> listParties = FastList.newInstance();
 		List<EntityCondition> conditions = FastList.newInstance();
 		if (filterByDateExpr) {
@@ -438,5 +557,54 @@ public class MatrimonyServices {
 			listParties.add(x.getString("partyIdFrom"));
 		}
 		return listParties;
+	}
+	public static Map<String, Object> addFriend(DispatchContext ctx, Map<String, ? extends Object> context)
+			throws GenericEntityException, GenericServiceException {
+		Map<String, Object> result = FastMap.newInstance();
+		Delegator delegator = ctx.getDelegator();
+		LocalDispatcher dispatcher = ctx.getDispatcher();
+		GenericValue admin = delegator.findOne("UserLogin", UtilMisc.toMap("userLoginId", "admin"), false);
+//		createPartyRelationship between two persons
+		dispatcher.runSync("createPartyRelationship",
+				UtilMisc.toMap("partyIdFrom", context.get("userLoginPartyId"), "partyIdTo", context.get("partyId"), "roleTypeIdFrom", "FRIEND",
+						"roleTypeIdTo", "FRIEND", "partyRelationshipTypeId", "FRIEND", "statusId", "REQUESTED", "userLogin", admin));
+		result.put("partyId", context.get("partyId"));
+		return result;
+	}
+	public static Map<String, Object> acceptFriend(DispatchContext ctx, Map<String, ? extends Object> context)
+			throws GenericEntityException, GenericServiceException {
+		Map<String, Object> result = FastMap.newInstance();
+		Delegator delegator = ctx.getDelegator();
+		LocalDispatcher dispatcher = ctx.getDispatcher();
+		GenericValue admin = delegator.findOne("UserLogin", UtilMisc.toMap("userLoginId", "admin"), false);
+		Long fromDateL = (Long) context.get("fromDate");
+		Timestamp fromDate = null;
+		if (UtilValidate.isNotEmpty(fromDateL)) {
+			fromDate = new Timestamp(fromDateL);
+		}
+//		createPartyRelationship between two persons
+		dispatcher.runSync("updatePartyRelationship",
+				UtilMisc.toMap("partyIdFrom", context.get("partyId"), "partyIdTo", context.get("userLoginPartyId"), "roleTypeIdFrom", "FRIEND",
+						"roleTypeIdTo", "FRIEND", "partyRelationshipTypeId", "FRIEND", "statusId", "ACCEPTED", "fromDate", fromDate, "userLogin", admin));
+		result.put("partyId", context.get("partyId"));
+		return result;
+	}
+	public static Map<String, Object> cancelFriend(DispatchContext ctx, Map<String, ? extends Object> context)
+			throws GenericEntityException, GenericServiceException {
+		Map<String, Object> result = FastMap.newInstance();
+		Delegator delegator = ctx.getDelegator();
+		LocalDispatcher dispatcher = ctx.getDispatcher();
+		GenericValue admin = delegator.findOne("UserLogin", UtilMisc.toMap("userLoginId", "admin"), false);
+		Long fromDateL = (Long) context.get("fromDate");
+		Timestamp fromDate = null;
+		if (UtilValidate.isNotEmpty(fromDateL)) {
+			fromDate = new Timestamp(fromDateL);
+		}
+//		createPartyRelationship between two persons
+		dispatcher.runSync("updatePartyRelationship",
+				UtilMisc.toMap("partyIdFrom", context.get("partyId"), "partyIdTo", context.get("userLoginPartyId"), "roleTypeIdFrom", "FRIEND",
+						"roleTypeIdTo", "FRIEND", "partyRelationshipTypeId", "FRIEND", "statusId", "CANCEL", "fromDate", fromDate, "userLogin", admin));
+		result.put("partyId", context.get("partyId"));
+		return result;
 	}
 }

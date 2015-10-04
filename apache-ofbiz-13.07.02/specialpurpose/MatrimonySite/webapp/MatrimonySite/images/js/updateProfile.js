@@ -100,7 +100,7 @@ if (typeof (BaseLayer) == "undefined") {
 if (typeof (AccountLayer) == "undefined") {
 	var AccountLayer = (function() {
 		var initJqxElements = function() {
-			$("#jqxwindowRenewals").jqxWindow({ theme: 'energyblue', width: 400, maxWidth: 1845, height: 120, resizable: false,
+			$("#jqxwindowRenewals").jqxWindow({ theme: 'energyblue', width: 400, maxWidth: 1845, height: 130, resizable: false,
 				isModal: true, autoOpen: false, cancelButton: $("#cancelRenewals"), modalOpacity: 0.7 });
 			
 			var listPayment = [{value: 'Monthly', label: multiLang.Monthly}, {value: 'Yearly', label: multiLang.Yearly}];
