@@ -20,6 +20,7 @@ import org.ofbiz.entity.transaction.TransactionUtil;
 import org.ofbiz.entity.util.EntityFindOptions;
 import org.ofbiz.entity.util.EntityUtil;
 import org.ofbiz.service.DispatchContext;
+import org.ofbiz.service.GenericServiceException;
 import org.ofbiz.service.LocalDispatcher;
 import org.ofbiz.service.ServiceUtil;
 
@@ -244,7 +245,7 @@ public class MatrimonyServices {
 			partyId = userLogin.getString("partyId");
 		}
 //		get basic info
-		GenericValue person = delegator.findOne("Person", UtilMisc.toMap("partyId", partyId), false);
+		GenericValue person = delegator.findOne("PersonAndCaste", UtilMisc.toMap("partyId", partyId), false);
 		
 		profile.put("partyId", person.getString("partyId"));
 		profile.put("firstName", person.getString("firstName"));
@@ -257,6 +258,7 @@ public class MatrimonyServices {
 		profile.put("motherTongue", person.getString("motherTongue"));
 		profile.put("religion", person.getString("religion"));
 		profile.put("casteId", person.getString("casteId"));
+		profile.put("casteName", person.getString("casteName"));
 		profile.put("payment", person.getString("comments"));
 		profile.put("birthDate", person.getDate("birthDate").toString());
 		profile.put("height", person.getDouble("height"));
@@ -318,5 +320,123 @@ public class MatrimonyServices {
 		}
 		result.put("profile", profile);
 		return result;
+	}
+	public static Map<String, Object> listFriendsMayKnow(DispatchContext ctx, Map<String, ? extends Object> context)
+			throws GenericEntityException, GenericServiceException {
+		Map<String, Object> result = FastMap.newInstance();
+		Delegator delegator = ctx.getDelegator();
+		Locale locale = (Locale) context.get("locale");
+		String userLoginPartyId = (String) context.get("userLoginPartyId");
+		String partyFullName = (String) context.get("partyFullName");
+		String gender = (String) context.get("gender");
+		String city = (String) context.get("city");
+		String casteId = (String) context.get("casteId");
+		String maritalStatus = (String) context.get("maritalStatus");
+		
+		List<Map<String, Object>> listFriendsMayKnow = FastList.newInstance();
+		List<String> allCustomerIds = getPartiesByRolesAndPartyFrom("Company", "INTERNAL_ORGANIZATIO", "CUSTOMER", delegator, true);
+//		TODO: now get friendIds by All customer but will get friendIds by conditions of user
+		List<String> friendIds = allCustomerIds;
+		friendIds.remove(userLoginPartyId);
+		List<EntityCondition> conditions = FastList.newInstance();
+		conditions.add(EntityCondition.makeCondition("partyId", EntityJoinOperator.IN, friendIds));
+		if (UtilValidate.isNotEmpty(partyFullName)) {
+			conditions.add(EntityCondition.makeCondition("partyFullName", EntityJoinOperator.LIKE, "%" + partyFullName + "%"));
+		}
+		if (UtilValidate.isNotEmpty(gender)) {
+			conditions.add(EntityCondition.makeCondition("gender", EntityJoinOperator.EQUALS, gender));
+		}
+		if (UtilValidate.isNotEmpty(city)) {
+			List<String> partiesInCity = getPartiesByCity(delegator, city);
+			conditions.add(EntityCondition.makeCondition("partyId", EntityJoinOperator.IN, partiesInCity));
+		}
+		if (UtilValidate.isNotEmpty(casteId)) {
+			conditions.add(EntityCondition.makeCondition("casteId", EntityJoinOperator.EQUALS, casteId));
+		}
+		if (UtilValidate.isNotEmpty(maritalStatus)) {
+			conditions.add(EntityCondition.makeCondition("maritalStatus", EntityJoinOperator.EQUALS, maritalStatus));
+		}
+		List<GenericValue> person = delegator.findList("PersonAndCaste",
+				EntityCondition.makeCondition(conditions), UtilMisc.toSet("partyId", "partyFullName", "casteName", "gender"), UtilMisc.toList("partyFullName"), null, false);
+		List<Map<String, Object>> listOncePage = FastList.newInstance();
+		for (GenericValue x : person) {
+			Map<String, Object> mapOncePage = FastMap.newInstance();
+			mapOncePage.putAll(x);
+//			FIXME: hardcode image url /MatrimonySite/images/image/noavatar.jpg
+			mapOncePage.put("avatar", "/MatrimonySite/images/image/noavatar.jpg");
+			mapOncePage.put("city", getCityByPartyId(delegator, x.getString("partyId")));
+			mapOncePage.put("genderDetails", UtilProperties.getMessage(resource, x.getString("gender"), locale));
+			if ((person.indexOf(x)%3) == 0) {
+				listOncePage = FastList.newInstance();
+				Map<String, Object> mapFriendsMayKnow = FastMap.newInstance();
+				mapFriendsMayKnow.put("friends", listOncePage);
+				listFriendsMayKnow.add(mapFriendsMayKnow);
+			}
+			listOncePage.add(mapOncePage);
+		}
+		result.put("listFriendsMayKnow", listFriendsMayKnow);
+		return result;
+	}
+	private static List<String> getPartiesByCity(Delegator delegator, String stateProvinceGeoId) throws GenericEntityException {
+		List<GenericValue> postalAddresses = delegator.findList("PostalAddress",
+				EntityCondition.makeCondition("stateProvinceGeoId", EntityJoinOperator.EQUALS, stateProvinceGeoId),
+				UtilMisc.toSet("contactMechId"), null, null, false);
+		List<String> contactMechIds = EntityUtil.getFieldListFromEntityList(postalAddresses, "contactMechId", true);
+		List<EntityCondition> conditions = FastList.newInstance();
+		conditions.add(EntityCondition.makeCondition("contactMechId", EntityJoinOperator.IN, contactMechIds));
+		conditions.add(EntityCondition.makeCondition("contactMechPurposeTypeId", EntityJoinOperator.EQUALS, "PRIMARY_LOCATION"));
+		List<GenericValue> partyContactMechPurposes = delegator.findList("PartyContactMechPurpose",
+				EntityCondition.makeCondition(conditions),
+				UtilMisc.toSet("partyId"), null, null, false);
+		if (UtilValidate.isNotEmpty(partyContactMechPurposes)) {
+			return EntityUtil.getFieldListFromEntityList(partyContactMechPurposes, "partyId", true);
+		}
+		return null;
+	}
+	private static String getCityByPartyId(Delegator delegator, String partyId) throws GenericEntityException {
+		List<EntityCondition> conditions = FastList.newInstance();
+		conditions.add(EntityCondition.makeCondition(EntityUtil.getFilterByDateExpr()));
+		conditions.add(EntityCondition.makeCondition(UtilMisc.toMap("partyId", partyId, "contactMechPurposeTypeId", "PRIMARY_LOCATION")));
+		List<GenericValue> partyContactMechPurposes = delegator.findList("PartyContactMechPurpose", 
+				EntityCondition.makeCondition(conditions), null, null, null, false);
+		if (UtilValidate.isNotEmpty(partyContactMechPurposes)) {
+			String contactMechId = EntityUtil.getFirst(partyContactMechPurposes).getString("contactMechId");
+			GenericValue postalAddress = delegator.findOne("PostalAddress", UtilMisc.toMap("contactMechId", contactMechId), false);
+			if (UtilValidate.isNotEmpty(postalAddress)) {
+				GenericValue geo = delegator.findOne("Geo", UtilMisc.toMap("geoId", postalAddress.getString("stateProvinceGeoId")), false);
+				if (UtilValidate.isNotEmpty(geo)) {
+					return geo.getString("geoName");
+				}
+			}
+		}
+		return null;
+	}
+	public static List<String> getPartiesByRolesAndPartyFrom(String partyIdFrom, String roleTypeIdFrom, String roleTypeIdTo, Delegator delegator, boolean filterByDateExpr) throws GenericEntityException{
+		List<String> listParties = FastList.newInstance();
+		List<EntityCondition> conditions = FastList.newInstance();
+		if (filterByDateExpr) {
+			conditions.add(EntityCondition.makeCondition(EntityUtil.getFilterByDateExpr()));
+		}
+		conditions.add(EntityCondition.makeCondition(UtilMisc.toMap("partyIdFrom", partyIdFrom, "roleTypeIdFrom", roleTypeIdFrom, "roleTypeIdTo", roleTypeIdTo)));
+		List<GenericValue> listPartyRelationship = delegator.findList("PartyRelationship",
+				EntityCondition.makeCondition(conditions, EntityJoinOperator.AND), null, null, null, false);
+		for (GenericValue x : listPartyRelationship) {
+			listParties.add(x.getString("partyIdTo"));
+		}
+		return listParties;
+	}
+	public static List<String> getPartiesByRolesAndPartyTo(String partyIdTo, String roleTypeIdFrom, String roleTypeIdTo, Delegator delegator, boolean filterByDateExpr) throws GenericEntityException{
+		List<String> listParties = FastList.newInstance();
+		List<EntityCondition> conditions = FastList.newInstance();
+		if (filterByDateExpr) {
+			conditions.add(EntityCondition.makeCondition(EntityUtil.getFilterByDateExpr()));
+		}
+		conditions.add(EntityCondition.makeCondition(UtilMisc.toMap("partyIdTo", partyIdTo, "roleTypeIdFrom", roleTypeIdFrom, "roleTypeIdTo", roleTypeIdTo)));
+		List<GenericValue> listPartyRelationship = delegator.findList("PartyRelationship",
+				EntityCondition.makeCondition(conditions, EntityJoinOperator.AND), null, null, null, false);
+		for (GenericValue x : listPartyRelationship) {
+			listParties.add(x.getString("partyIdFrom"));
+		}
+		return listParties;
 	}
 }

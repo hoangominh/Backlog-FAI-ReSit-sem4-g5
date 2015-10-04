@@ -30,9 +30,7 @@
 				<div class='row-fluid margin-bottom10'>
 					<div class='span4'><label class='text-right'>${uiLabelMap.MSAvatar}</label></div>
 					<div class='span7'>
-						<div id="productImageViewerTotal">
-							<img src="/MatrimonySite/images/image/noavatar.jpg" id="imagePreview" height="180" width="95%" style="max-width: none;"/>
-						</div>
+						<img src="/MatrimonySite/images/image/noavatar.jpg" id="imagePreview" height="180" width="95%" style="max-width: none;"/>
 					</div>
 					<div class='span1 no-left-margin'>
 						<input type="file" id="txtFile" style="visibility:hidden;" />

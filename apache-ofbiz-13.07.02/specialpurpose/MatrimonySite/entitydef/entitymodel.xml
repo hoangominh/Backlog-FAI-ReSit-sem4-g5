@@ -23,4 +23,22 @@
 			<key-map field-name="casteId"/>
 		</relation>
 	</extend-entity>
+	
+	<view-entity entity-name="PersonAndCaste" package-name="com.ms">
+    	<member-entity entity-alias="PS" entity-name="Person"/>
+    	<member-entity entity-alias="CT" entity-name="Caste"/>
+    	<alias-all entity-alias="PS"></alias-all>
+    	<alias-all entity-alias="CT"></alias-all>
+    	<alias name="partyFullName">
+		<complex-alias operator="||' '||">
+			<complex-alias-field entity-alias="PS" field="lastName" default-value="''"/>
+			<complex-alias-field entity-alias="PS" field="middleName" default-value="''"/>
+			<complex-alias-field entity-alias="PS" field="firstName" default-value="''"/>
+    		</complex-alias>
+    	</alias>
+    	<view-link rel-entity-alias="CT" entity-alias="PS">
+    		<key-map rel-field-name="casteId" field-name="casteId"/>
+    	</view-link>
+    </view-entity>
+    
 </entitymodel>

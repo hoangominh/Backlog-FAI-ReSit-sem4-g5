@@ -16,7 +16,68 @@
         <value xml:lang="en">You are not allowed to view this page.</value>
         <value xml:lang="zh">不允许你浏览这个页面。</value>
     </property>
-    
+	<!--     jqx -->
+    <property key="wgpagergotopagestring">
+        <value xml:lang="en">Go to page</value>
+        <value xml:lang="vi">Tới trang</value>
+	</property>
+	<property key="wgpagershowrowsstring">
+        <value xml:lang="en">Show rows</value>
+        <value xml:lang="vi">Số lượng dòng</value>
+	</property>
+	<property key="wgpagerrangestring">
+        <value xml:lang="en">of</value>
+        <value xml:lang="vi">trên</value>
+	</property>
+	<property key="wgpagernextbuttonstring">
+        <value xml:lang="en">next</value>
+        <value xml:lang="vi">trang tiếp theo</value>
+	</property>
+	<property key="wgpagerpreviousbuttonstring">
+        <value xml:lang="en">previous</value>
+        <value xml:lang="vi">trang trước</value>
+	</property>
+	<property key="wgsortascendingstring">
+        <value xml:lang="en">Sort Ascending</value>
+        <value xml:lang="vi">Sắp xếp tăng dần</value>
+	</property>
+	<property key="wgemptydatastring">
+        <value xml:lang="en">No data to display</value>
+        <value xml:lang="vi">Không có dữ liệu</value>
+	</property>
+	<property key="wgsortremovestring">
+        <value xml:lang="en">Sort remove</value>
+        <value xml:lang="vi">Bỏ sắp xếp</value>
+	</property>
+	<property key="wgemptydatastring">
+        <value xml:lang="en">No data to display</value>
+        <value xml:lang="vi">Không có dữ liệu</value>
+	</property>
+	<property key="wgfilterselectstring">
+        <value xml:lang="en">Select filter</value>
+        <value xml:lang="vi">Lựa chọn lọc</value>
+	</property>
+	<property key="wgfilterselectallstring">
+        <value xml:lang="en">(Select all)</value>
+        <value xml:lang="vi">(Chọn hết)</value>
+	</property>
+	<property key="filterchoosestring">
+        <value xml:lang="en">Please Choose:</value>
+        <value xml:lang="vi">Lựa chọn:</value>
+	</property>
+	<property key="wgdragDropToGroupColumn">
+        <value xml:lang="en">Drag a column and drop it here to group by that column</value>
+        <value xml:lang="vi">Kéo cột và thả vào đây để nhóm theo cột</value>
+	</property>
+	<property key="wgtodaystring">
+        <value xml:lang="en">Today</value>
+        <value xml:lang="vi">Hôm nay</value>
+	</property>
+	<property key="wgclearstring">
+        <value xml:lang="en">Clear</value>
+        <value xml:lang="vi">Xóa trắng</value>
+	</property>
+	<!--     jqx -->
     <property key="MSSignIn">
         <value xml:lang="en">Sign In</value>
         <value xml:lang="vi">Đăng nhập</value>
@@ -188,5 +249,29 @@
 	<property key="MSRenewals">
 		<value xml:lang="en">Renewals</value>
 		<value xml:lang="vi">Gia hạn</value>
+	</property>
+	<property key="MSRelationshipcenter">
+		<value xml:lang="en">Relationship center</value>
+		<value xml:lang="vi">Trung tâm kết bạn</value>
+	</property>
+	<property key="MSFriendsMayKnow">
+		<value xml:lang="en">Friends may know</value>
+		<value xml:lang="vi">Có thể bạn muốn làm quen</value>
+	</property>
+	<property key="MSFriends">
+		<value xml:lang="en">Friends</value>
+		<value xml:lang="vi">Bạn bè</value>
+	</property>
+	<property key="MSNewfeeds">
+		<value xml:lang="en">New feeds</value>
+		<value xml:lang="vi">Bảng tin</value>
+	</property>
+	<property key="MSOptions">
+		<value xml:lang="en">Options</value>
+		<value xml:lang="vi">Tùy chọn</value>
+	</property>
+	<property key="MSSearch">
+		<value xml:lang="en">Search</value>
+		<value xml:lang="vi">Tìm kiếm</value>
 	</property>
 </resource>

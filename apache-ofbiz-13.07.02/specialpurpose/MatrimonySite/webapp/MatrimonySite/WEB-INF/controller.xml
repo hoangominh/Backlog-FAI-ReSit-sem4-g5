@@ -84,6 +84,12 @@
 	 	<response name="success" type="request" value="json"></response>
 		<response name="error" type="request" value="json"></response>
  	</request-map>
+	<request-map uri="loadFriendsMayKnow">
+	 	<security https="true" auth="true"/>
+	 	<event type="service" invoke="loadFriendsMayKnow"></event>
+	 	<response name="success" type="request" value="json"></response>
+		<response name="error" type="request" value="json"></response>
+ 	</request-map>
 	
     <!-- View Mappings -->
     <view-map name="main" type="screen" page="component://MatrimonySite/widget/MatrimonySiteScreens.xml#main"/>

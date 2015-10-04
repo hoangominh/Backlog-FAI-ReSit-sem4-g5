@@ -235,6 +235,9 @@ if (typeof (DataAccess) == "undefined") {
 		    		$.notify(multiLang.CreateError + ": " + errorMessage, { className: "error" });
 		    	} else {
 		    		$.notify(multiLang.CreateSuccess, { className: "success" });
+		    		setTimeout(function() {
+		    			window.location.href = 'TimeLine';
+					}, 300);
 				}
 			});
 			return result;

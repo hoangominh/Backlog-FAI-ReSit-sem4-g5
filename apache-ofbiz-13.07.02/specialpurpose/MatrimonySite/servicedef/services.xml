@@ -47,4 +47,13 @@
 		<attribute name="partyId" mode="IN" type="String" optional="true"/>
 		<attribute name="profile" mode="OUT" type="java.util.Map" optional="true"/>
 	</service>
+    <service name="loadFriendsMayKnow" engine="java" invoke="listFriendsMayKnow" location="com.g5.MatrimonyServices" auth="true">
+		<attribute name="userLoginPartyId" mode="IN" type="String" optional="false"/>
+		<attribute name="partyFullName" mode="IN" type="String" optional="true"/>
+		<attribute name="gender" mode="IN" type="String" optional="true"/>
+		<attribute name="city" mode="IN" type="String" optional="true"/>
+		<attribute name="casteId" mode="IN" type="String" optional="true"/>
+		<attribute name="maritalStatus" mode="IN" type="String" optional="true"/>
+		<attribute name="listFriendsMayKnow" mode="OUT" type="List" optional="true"/>
+	</service>
 </services>
