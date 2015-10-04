@@ -53,13 +53,14 @@ if (typeof (BaseLayer) == "undefined") {
 			$("#btnUpdate").click(function () {
 			    if ($('#signUp').jqxValidator('validate')) {
 			    	var totalData = new Object();
-			    	totalData = _.extend(AccountLayer.getValue(), BasicLayer.getValue());
+			    	totalData = _.extend(AccountLayer.getValue(), BasicLayer.getValue(), _extendId());
 			    	DataAccess.execute({
-							url: "createAccount",
-							data: totalData})
+							url: "updateAccount",
+							data: totalData});
 			    }
 			});
 		};
+		var extendId;
 		var loadProfile = function() {
 			var data = DataAccess.getData({
 						url: "loadProfile",
@@ -67,6 +68,21 @@ if (typeof (BaseLayer) == "undefined") {
 						source: "profile"});
 			AccountLayer.setValue(data);
 			BasicLayer.setValue(data);
+			if (data) {
+				extendId = {
+						fromDate: data.fromDate,
+						contactNumberCMI: data.contactNumberCMI,
+						emailCMI: data.emailCMI,
+						cityCMI: data.cityCMI,
+						partyId: data.partyId
+				};
+			}
+		};
+		var _extendId = function() {
+			return extendId;
+		};
+		var _partyId = function() {
+			return partyId;
 		};
 		return {
 			init: function() {
@@ -76,18 +92,66 @@ if (typeof (BaseLayer) == "undefined") {
 				handlerEvents();
 				loadProfile();
 			},
-			loadProfile: loadProfile
+			loadProfile: loadProfile,
+			_extendId: _extendId,
 		}
 	})();
 }
 if (typeof (AccountLayer) == "undefined") {
 	var AccountLayer = (function() {
+		var initJqxElements = function() {
+			$("#jqxwindowRenewals").jqxWindow({ theme: 'energyblue', width: 400, maxWidth: 1845, height: 120, resizable: false,
+				isModal: true, autoOpen: false, cancelButton: $("#cancelRenewals"), modalOpacity: 0.7 });
+			
+			var listPayment = [{value: 'Monthly', label: multiLang.Monthly}, {value: 'Yearly', label: multiLang.Yearly}];
+			$("#txtRenewals").jqxDropDownList({ theme: 'energyblue', width: 162, height: 28, source: listPayment, selectedIndex: 0,
+				displayMember: "label", valueMember: "value", placeHolder: multiLang.filterchoosestring, autoDropDownHeight: true});
+		};
 		var handlerEvents = function() {
 			$("#imagePreview").click(function() {
 				$("#txtFile").click();
 			});
 			$("#txtFile").change(function(){
 			    readURL(this);
+			});
+			$("#renewals").click(function() {
+				$("#jqxwindowRenewals").jqxWindow('open');
+			});
+			$("#saveRenewals").click(function () {
+				var payment = $("#txtRenewals").jqxDropDownList('val');
+				var thruDate;
+				var currentDate;
+				if (new Date($("#txtExpiredDate").text()) == 'Invalid Date') {
+					currentDate = new Date();
+				} else {
+					currentDate = new Date(($("#txtExpiredDate").text()).toMilliseconds());
+				}
+				currentDate = currentDate.getTime();
+				switch (payment) {
+				case "Monthly":
+					thruDate = (new Date(86400000 * 30 + currentDate)).getTime();
+					break;
+				case "Yearly":
+					thruDate = (new Date(86400000 * 365 + currentDate)).getTime();
+					break;
+				default:
+					break;
+				}
+//				renewalsAccount
+				var fromDate;
+				if (BaseLayer._extendId().fromDate) {
+					fromDate = BaseLayer._extendId().fromDate.time;
+				}
+				DataAccess.execute({
+					url: "renewalsAccount",
+					data: {
+						partyId: BaseLayer._extendId().partyId,
+						fromDate: fromDate,
+						thruDate: thruDate
+						}
+					}, AccountLayer.reloadAccountExpiredDate, "thruDate");
+				
+				$("#jqxwindowRenewals").jqxWindow('close');
 			});
 		};
 		var readURL = function(input) {
@@ -111,6 +175,11 @@ if (typeof (AccountLayer) == "undefined") {
 				}
 			}
 		};
+		var reloadAccountExpiredDate = function(thruDate) {
+			if (thruDate) {
+				$("#txtExpiredDate").text((new Date(thruDate)).toTimeStandard());
+			}
+		};
 		var getValue = function() {
 			var value = new Object();
 			value.email = $("#txtEmailID").val();
@@ -120,15 +189,20 @@ if (typeof (AccountLayer) == "undefined") {
 			if (!_.isEmpty(data)) {
 				$("#txtEmailID").val(data.email);
 				$("#txtUsername").text(data.userLoginId);
+				if (data.thruDate) {
+					$("#txtExpiredDate").text((new Date(data.thruDate.time)).toTimeStandard());
+				}
 			}
 		};
 		return {
 			init: function() {
+				initJqxElements();
 				handlerEvents();
 			},
 			getValue: getValue,
 			setValue: setValue,
-			getFileImage: getFileImage
+			getFileImage: getFileImage,
+			reloadAccountExpiredDate: reloadAccountExpiredDate
 		};
 	})();
 }
@@ -238,7 +312,7 @@ if (typeof (DataAccess) == "undefined") {
 			});
 			return result;
 		};
-		var execute = function(parameters) {
+		var execute = function(parameters, callback, keySource) {
 			var result;
 			$.ajax({
 		        url: parameters.url?parameters.url:"",
@@ -253,9 +327,12 @@ if (typeof (DataAccess) == "undefined") {
 		    		if (res["_ERROR_MESSAGE_LIST_"]) {
 		    			errorMessage?errorMessage=res["_ERROR_MESSAGE_LIST_"][0]:errorMessage;
 					}
-		    		$.notify(multiLang.CreateError + ": " + errorMessage, { className: "error" });
+		    		$.notify(multiLang.UpdateError + ": " + errorMessage, { className: "error" });
 		    	} else {
-		    		$.notify(multiLang.CreateSuccess, { className: "success" });
+		    		$.notify(multiLang.UpdateSuccess, { className: "success" });
+				}
+		    	if (typeof (callback) == "function") {
+		    		callback(res[keySource]);
 				}
 			});
 			return result;

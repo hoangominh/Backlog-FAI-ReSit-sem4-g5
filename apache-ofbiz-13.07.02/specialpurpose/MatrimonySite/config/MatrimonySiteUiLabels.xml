@@ -147,11 +147,19 @@
 	</property>
 	<property key="CreateError">
 		<value xml:lang="en">Create Error</value>
-		<value xml:lang="vi">Tạo mới lôi</value>
+		<value xml:lang="vi">Tạo mới lỗi</value>
 	</property>
 	<property key="CreateSuccess">
 		<value xml:lang="en">Create Success</value>
 		<value xml:lang="vi">Tạo mới thành công</value>
+	</property>
+	<property key="UpdateError">
+		<value xml:lang="en">Update Error</value>
+		<value xml:lang="vi">cập nhật lỗi</value>
+	</property>
+	<property key="UpdateSuccess">
+		<value xml:lang="en">Update Success</value>
+		<value xml:lang="vi">Cập nhật thành công</value>
 	</property>
 	<property key="TimeLine">
 		<value xml:lang="en">TimeLine</value>
@@ -172,5 +180,13 @@
 	<property key="MSUpdateProfile">
 		<value xml:lang="en">Update Profile</value>
 		<value xml:lang="vi">Cập nhật thông tin cá nhân</value>
+	</property>
+	<property key="MSExpiredDate">
+		<value xml:lang="en">Expired Date</value>
+		<value xml:lang="vi">Ngày hết hạn</value>
+	</property>
+	<property key="MSRenewals">
+		<value xml:lang="en">Renewals</value>
+		<value xml:lang="vi">Gia hạn</value>
 	</property>
 </resource>

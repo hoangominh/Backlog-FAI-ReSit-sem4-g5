@@ -66,6 +66,18 @@
 	 	<response name="success" type="request" value="json"></response>
 		<response name="error" type="request" value="json"></response>
  	</request-map>
+	<request-map uri="updateAccount">
+	 	<security https="true" auth="true"/>
+	 	<event type="service" invoke="updateAccount"></event>
+	 	<response name="success" type="request" value="json"></response>
+		<response name="error" type="request" value="json"></response>
+ 	</request-map>
+	<request-map uri="renewalsAccount">
+	 	<security https="true" auth="true"/>
+	 	<event type="service" invoke="renewalsAccount"></event>
+	 	<response name="success" type="request" value="json"></response>
+		<response name="error" type="request" value="json"></response>
+ 	</request-map>
 	<request-map uri="loadProfile">
 	 	<security https="false" auth="false"/>
 	 	<event type="service" invoke="loadProfile"></event>

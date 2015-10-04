@@ -27,6 +27,22 @@
 		<attribute name="thruDate" mode="IN" type="Long" optional="false"/>
 		<override name="birthDate" type="Long" optional="true"></override>
 	</service>
+    <service name="updateAccount" engine="java" invoke="updateAccount" location="com.g5.MatrimonyServices" auth="true">
+		<auto-attributes mode="IN" entity-name="Person" optional="true"></auto-attributes>
+		<auto-attributes mode="IN" entity-name="UserLogin" optional="true"></auto-attributes>
+		<attribute name="city" mode="IN" type="String" optional="true"/>
+		<attribute name="contactNumber" mode="IN" type="String" optional="true"/>
+		<attribute name="email" mode="IN" type="String" optional="false"/>
+		<attribute name="contactNumberCMI" mode="IN" type="String" optional="false"/>
+		<attribute name="emailCMI" mode="IN" type="String" optional="false"/>
+		<attribute name="cityCMI" mode="IN" type="String" optional="false"/>
+		<override name="birthDate" type="Long" optional="true"></override>
+	</service>
+    <service name="renewalsAccount" engine="java" invoke="renewalsAccount" location="com.g5.MatrimonyServices" auth="true">
+		<attribute name="partyId" mode="IN" type="String" optional="true"/>
+		<attribute name="fromDate" mode="IN" type="Long" optional="true"/>
+		<attribute name="thruDate" mode="INOUT" type="Long" optional="true"/>
+	</service>
     <service name="loadProfile" engine="java" invoke="loadProfile" location="com.g5.MatrimonyServices" auth="true">
 		<attribute name="partyId" mode="IN" type="String" optional="true"/>
 		<attribute name="profile" mode="OUT" type="java.util.Map" optional="true"/>

@@ -62,12 +62,12 @@ public class MatrimonyServices {
 		Long birthDateL = (Long) context.get("birthDate");
 		Long thruDateL = (Long) context.get("thruDate");
 		java.sql.Date birthDate = null;
-		java.sql.Date thruDate = null;
+		Timestamp thruDate = null;
 		if (UtilValidate.isNotEmpty(birthDateL)) {
 			birthDate = new java.sql.Date(birthDateL);
 		}
 		if (UtilValidate.isNotEmpty(thruDateL)) {
-			thruDate = new java.sql.Date(thruDateL);
+			thruDate = new Timestamp(thruDateL);
 		}
 		boolean beganTx = TransactionUtil.begin(7200);
 		try {
@@ -99,7 +99,7 @@ public class MatrimonyServices {
 //			createPartyContactMechPurpose TELECOM_NUMBER
 			dispatcher.runSync("createPartyContactMechPurpose",
 					UtilMisc.toMap("partyId", partyId, "contactMechId", contactMechId, "contactMechPurposeTypeId", "PRIMARY_PHONE", "userLogin", userLogin));
-			
+
 //			createPartyContactMech EMAIL_ADDRESS
 			Map<String, Object> resultCreateEmail = dispatcher.runSync("createPartyContactMech",
 					UtilMisc.toMap("partyId", partyId, "contactMechTypeId", "EMAIL_ADDRESS", "infoString", context.get("email"),
@@ -108,6 +108,7 @@ public class MatrimonyServices {
 //			createPartyContactMechPurpose EMAIL_ADDRESS
 			dispatcher.runSync("createPartyContactMechPurpose",
 					UtilMisc.toMap("partyId", partyId, "contactMechId", contactMechId, "contactMechPurposeTypeId", "PRIMARY_EMAIL", "userLogin", userLogin));
+//			createPostalAddress POSTAL_ADDRESS
 			Map<String, Object> resultCreatePostalAddress = dispatcher.runSync("createPostalAddress",
 					UtilMisc.toMap("toName", context.get("firstName"), "city", context.get("city"), "stateProvinceGeoId", context.get("city"),
 							"address1", context.get("city"), "postalCode", "70000", "userLogin", userLogin));
@@ -115,7 +116,7 @@ public class MatrimonyServices {
 //			createPartyContactMech POSTAL_ADDRESS
 			dispatcher.runSync("createPartyContactMech",
 					UtilMisc.toMap("partyId", partyId, "contactMechId", contactMechId, "allowSolicitation", "Y", "userLogin", userLogin));
-//			createPartyContactMechPurpose POSTAL_ADDRESS
+//			createPartyContactMechPurpose PRIMARY_LOCATION
 			dispatcher.runSync("createPartyContactMechPurpose",
 					UtilMisc.toMap("partyId", partyId, "contactMechId", contactMechId, "contactMechPurposeTypeId", "PRIMARY_LOCATION", "userLogin", userLogin));
 			GenericValue admin = delegator.findOne("UserLogin", UtilMisc.toMap("userLoginId", "admin"), false);
@@ -130,6 +131,94 @@ public class MatrimonyServices {
 			TransactionUtil.rollback(beganTx, e.getMessage(), e);
 			e.printStackTrace();
 		}
+		TransactionUtil.commit(beganTx);
+		return result;
+	}
+	public static Map<String, Object> updateAccount(DispatchContext ctx, Map<String, ? extends Object> context) throws GenericEntityException {
+		Map<String, Object> result = ServiceUtil.returnSuccess();
+		Delegator delegator = ctx.getDelegator();
+		LocalDispatcher dispatcher = ctx.getDispatcher();
+		Long birthDateL = (Long) context.get("birthDate");
+		java.sql.Date birthDate = null;
+		if (UtilValidate.isNotEmpty(birthDateL)) {
+			birthDate = new java.sql.Date(birthDateL);
+		}
+		String partyId = (String) context.get("partyId");
+		GenericValue admin = delegator.findOne("UserLogin", UtilMisc.toMap("userLoginId", "admin"), false);
+		boolean beganTx = TransactionUtil.begin(7200);
+		try {
+//			updatePerson
+			dispatcher.runSync("updatePerson",
+					UtilMisc.toMap("partyId", partyId, "firstName", context.get("firstName"), "middleName", context.get("middleName"), "lastName", context.get("lastName"),
+							"gender", context.get("gender"), "maritalStatus", context.get("maritalStatus"), "height", context.get("height"),
+							"motherTongue", context.get("motherTongue"), "religion", context.get("religion"), "casteId", context.get("casteId"),
+							"birthDate", birthDate, "userLogin", admin));
+//			update PRIMARY_PHONE
+			GenericValue TelecomNumber = delegator.makeValue("TelecomNumber", UtilMisc.toMap("contactMechId", context.get("contactNumberCMI"),
+					"contactNumber", context.get("contactNumber"), "askForName", context.get("firstName")));
+			delegator.createOrStore(TelecomNumber);
+			
+//			update PRIMARY_EMAIL
+			GenericValue ContactMech = delegator.makeValue("ContactMech", UtilMisc.toMap("contactMechId", context.get("emailCMI"),
+					"infoString", context.get("email")));
+			delegator.createOrStore(ContactMech);
+			
+//			update PRIMARY_LOCATION
+			GenericValue PostalAddress = delegator.makeValue("PostalAddress", UtilMisc.toMap("contactMechId", context.get("cityCMI"),
+					"toName", context.get("firstName"), "city", context.get("city"), "stateProvinceGeoId", context.get("city"),
+					"address1", context.get("city")));
+			delegator.createOrStore(PostalAddress);
+			
+		} catch (Exception e) {
+			TransactionUtil.rollback(beganTx, e.getMessage(), e);
+			e.printStackTrace();
+		}
+		TransactionUtil.commit(beganTx);
+		return result;
+	}
+	public static Map<String, Object> renewalsAccount(DispatchContext ctx, Map<String, ? extends Object> context) throws GenericEntityException {
+		Map<String, Object> result = ServiceUtil.returnSuccess();
+		Delegator delegator = ctx.getDelegator();
+		LocalDispatcher dispatcher = ctx.getDispatcher();
+		GenericValue admin = delegator.findOne("UserLogin", UtilMisc.toMap("userLoginId", "admin"), false);
+		Long thruDateL = (Long) context.get("thruDate");
+		Timestamp thruDate = null;
+		if (UtilValidate.isNotEmpty(thruDateL)) {
+			thruDate = new Timestamp(thruDateL);
+		}
+		Long fromDateL = (Long) context.get("fromDate");
+		Timestamp fromDate = null;
+		if (UtilValidate.isNotEmpty(fromDateL)) {
+			fromDate = new Timestamp(fromDateL);
+		}
+		boolean beganTx = TransactionUtil.begin(7200);
+		if (UtilValidate.isEmpty(fromDate)) {
+			fromDate = new Timestamp(System.currentTimeMillis());
+			try {
+//				createPartyRole CUSTOMER
+				dispatcher.runSync("createPartyRole",
+						UtilMisc.toMap("partyId", context.get("partyId"), "roleTypeId", "CUSTOMER", "userLogin", admin));
+//				createPartyRelationship between person and corporation
+					dispatcher.runSync("createPartyRelationship",
+							UtilMisc.toMap("partyIdFrom", "Company", "partyIdTo", context.get("partyId"), "roleTypeIdFrom", "INTERNAL_ORGANIZATIO",
+									"roleTypeIdTo", "CUSTOMER", "partyRelationshipTypeId", "CUSTOMER_REL", "thruDate", thruDate, "userLogin", admin));
+			} catch (Exception e) {
+				TransactionUtil.rollback(beganTx, e.getMessage(), e);
+				e.printStackTrace();
+			}
+		} else {
+			try {
+//				updatePartyRelationship
+				dispatcher.runSync("updatePartyRelationship",
+						UtilMisc.toMap("partyIdFrom", "Company", "partyIdTo", context.get("partyId"), "roleTypeIdFrom", "INTERNAL_ORGANIZATIO",
+								"roleTypeIdTo", "CUSTOMER", "partyRelationshipTypeId", "CUSTOMER_REL", "thruDate", thruDate,
+								"fromDate", fromDate, "userLogin", admin));
+			} catch (Exception e) {
+				TransactionUtil.rollback(beganTx, e.getMessage(), e);
+				e.printStackTrace();
+			}
+		}
+		result.put("thruDate", thruDate.getTime());
 		TransactionUtil.commit(beganTx);
 		return result;
 	}
@@ -157,6 +246,7 @@ public class MatrimonyServices {
 //		get basic info
 		GenericValue person = delegator.findOne("Person", UtilMisc.toMap("partyId", partyId), false);
 		
+		profile.put("partyId", person.getString("partyId"));
 		profile.put("firstName", person.getString("firstName"));
 		profile.put("middleName", person.getString("middleName"));
 		profile.put("lastName", person.getString("lastName"));
@@ -183,6 +273,9 @@ public class MatrimonyServices {
 						"roleTypeIdTo", "CUSTOMER", "partyRelationshipTypeId", "CUSTOMER_REL")), null, null, null, false);
 		if (UtilValidate.isNotEmpty(partyRelationships)) {
 			profile.put("thruDate", EntityUtil.getFirst(partyRelationships).getTimestamp("thruDate"));
+			profile.put("fromDate", EntityUtil.getFirst(partyRelationships).getTimestamp("fromDate"));
+		} else {
+			profile.put("thruDate", "N_A");
 		}
 //		get contact info
 		List<EntityCondition> conditions = FastList.newInstance();
@@ -198,18 +291,21 @@ public class MatrimonyServices {
 				GenericValue telecomNumber = delegator.findOne("TelecomNumber", UtilMisc.toMap("contactMechId", contactMechId), false);
 				if (UtilValidate.isNotEmpty(telecomNumber)) {
 					profile.put("contactNumber", telecomNumber.getString("contactNumber"));
+					profile.put("contactNumberCMI", contactMechId);
 				}
 				break;
 			case "PRIMARY_EMAIL":
 				GenericValue contactMech = delegator.findOne("ContactMech", UtilMisc.toMap("contactMechId", contactMechId), false);
 				if (UtilValidate.isNotEmpty(contactMech)) {
 					profile.put("email", contactMech.getString("infoString"));
+					profile.put("emailCMI", contactMechId);
 				}
 				break;
 			case "PRIMARY_LOCATION":
 				GenericValue postalAddress = delegator.findOne("PostalAddress", UtilMisc.toMap("contactMechId", contactMechId), false);
 				if (UtilValidate.isNotEmpty(postalAddress)) {
 					profile.put("city", postalAddress.getString("stateProvinceGeoId"));
+					profile.put("cityCMI", contactMechId);
 					GenericValue geo = delegator.findOne("Geo", UtilMisc.toMap("geoId", postalAddress.getString("stateProvinceGeoId")), false);
 					if (UtilValidate.isNotEmpty(geo)) {
 						profile.put("cityDetails", geo.getString("geoName"));

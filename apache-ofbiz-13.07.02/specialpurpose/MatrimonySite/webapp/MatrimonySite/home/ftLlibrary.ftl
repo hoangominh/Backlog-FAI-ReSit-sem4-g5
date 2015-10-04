@@ -24,5 +24,7 @@
 			Yearly: "${StringUtil.wrapString(uiLabelMap.Yearly)}",
 			CreateError: "${StringUtil.wrapString(uiLabelMap.CreateError)}",
 			CreateSuccess: "${StringUtil.wrapString(uiLabelMap.CreateSuccess)}",
+			UpdateError: "${StringUtil.wrapString(uiLabelMap.UpdateError)}",
+			UpdateSuccess: "${StringUtil.wrapString(uiLabelMap.UpdateSuccess)}",
 	};
 </script>
