@@ -38,7 +38,9 @@ if (typeof (BasicLayer) == "undefined") {
 		var setValue = function(data) {
 			if (!_.isEmpty(data)) {
 				$("#txtFirstName").text(data.firstName);
-				$("#txtMiddleName").text(data.middleName);
+				if (data.middleName) {
+					$("#txtMiddleName").text(data.middleName);
+				}
 				$("#txtLastName").text(data.lastName);
 				if (data.birthDate) {
 					$("#txtBirthDate").text((new Date(data.birthDate)).toTimeStandard());
@@ -47,8 +49,12 @@ if (typeof (BasicLayer) == "undefined") {
 				$("#txtHeight").text(data.height);
 				$("#txtContactNumber").text(data.contactNumber);
 				$("#txtCity").text(data.cityDetails);
-				$("#txtMotherTongue").text(data.motherTongue);
-				$("#txtReligion").text(data.religion);
+				if (data.motherTongue) {
+					$("#txtMotherTongue").text(data.motherTongue);
+				}
+				if (data.religion) {
+					$("#txtReligion").text(data.religion);
+				}
 				$("#txtCaste").text(data.casteId);
 				$("#txtMaritalStatus").text(data.maritalStatusDetails);
 			}
