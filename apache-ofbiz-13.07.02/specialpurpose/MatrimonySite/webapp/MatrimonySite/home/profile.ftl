@@ -17,6 +17,10 @@
 	</#if>
 </#if>
 
+<script>
+	var partyIdFromParameters = "${partyId?if_exists}";
+</script>
+
 <div id="signUp">
 	<div class="span12 no-left-margin boder-all-profile">
 	<span class="text-header">${uiLabelMap.MSAccountDetails}</span>

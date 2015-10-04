@@ -37,6 +37,7 @@
 			MSCancel: "${StringUtil.wrapString(uiLabelMap.MSCancel)}",
 			MSMessage: "${StringUtil.wrapString(uiLabelMap.MSMessage)}",
 			MSViewProfile: "${StringUtil.wrapString(uiLabelMap.MSViewProfile)}",
+			MSFriends: "${StringUtil.wrapString(uiLabelMap.MSFriends)}",
 	};
 	var getLocalization = function () {
         var localizationobj = {};

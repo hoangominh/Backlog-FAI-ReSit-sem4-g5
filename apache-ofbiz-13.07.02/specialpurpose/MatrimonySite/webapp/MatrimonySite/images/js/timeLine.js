@@ -266,7 +266,7 @@ if (typeof (Friends) == "undefined") {
 				enableHover: true,
 				rendered: function () {},
 				columns: [
-				          {text: multiLang.MSFriendRequests, align: 'left', dataField: 'model',
+				          {text: multiLang.MSFriends, align: 'left', dataField: 'model',
 				        	  cellsRenderer: function (row, column, value, rowData) {
 				        		  var friends = rowData.friends;
 				        		  var container = "<div>";

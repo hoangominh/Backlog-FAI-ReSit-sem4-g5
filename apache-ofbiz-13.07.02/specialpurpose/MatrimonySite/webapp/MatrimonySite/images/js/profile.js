@@ -6,7 +6,7 @@ if (typeof (BaseLayer) == "undefined") {
 		var loadProfile = function() {
 			var data = DataAccess.getData({
 						url: "loadProfile",
-						data: {},
+						data: {partyId: partyIdFromParameters},
 						source: "profile"});
 			AccountLayer.setValue(data);
 			BasicLayer.setValue(data);
