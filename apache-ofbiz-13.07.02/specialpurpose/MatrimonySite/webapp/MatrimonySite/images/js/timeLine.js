@@ -26,7 +26,15 @@ if (typeof (FriendsMayKnowLayer) == "undefined") {
 		        pageable: true,
 		        pageSize: 1,
 		        enableHover: true,
-		        rendered: function () {},
+		        rendered: function () {
+		        	var rows = $("#friendsMayKnowDataTable").jqxDataTable('getRows');
+		        	for ( var x in rows) {
+		        		var friends = rows[x].friends;
+		        		for ( var z in friends) {
+			        		$("#div" + friends[z].partyId).jqxTooltip({ content: friends[z].comments, position: 'mouse'});
+						}
+					}
+		        },
 		        columns: [
 		              {text: multiLang.MSFriendsMayKnow, align: 'left', dataField: 'model',
 		                  cellsRenderer: function (row, column, value, rowData) {
@@ -34,7 +42,7 @@ if (typeof (FriendsMayKnowLayer) == "undefined") {
 		                      var container = "<div>";
 		                      for (var i = 0; i < friends.length; i++) {
 		                          var friend = friends[i];
-		                          var item = "<div style='float: left; width: 210px; overflow: hidden; white-space: nowrap; height: 275px;'>";
+		                          var item = "<div id='div" + friend.partyId + "' style='float: left; width: 210px; overflow: hidden; white-space: nowrap; height: 275px;'>";
 		                          var image = "<div style='margin: 5px; margin-bottom: 3px;'>";
 		                          var imgurl = friend.avatar;
 		                          var img = '<img width=160 height=120 style="display: block;" src="' + imgurl + '"/>';
@@ -167,7 +175,15 @@ if (typeof (FriendRequestLayer) == "undefined") {
 		        pageable: true,
 		        pageSize: 1,
 		        enableHover: true,
-		        rendered: function () {},
+		        rendered: function () {
+		        	var rows = $("#friendRequestDataTable").jqxDataTable('getRows');
+		        	for ( var x in rows) {
+		        		var friends = rows[x].friends;
+		        		for ( var z in friends) {
+			        		$("#div" + friends[z].partyId).jqxTooltip({ content: friends[z].comments, position: 'mouse'});
+						}
+					}
+		        },
 		        columns: [
 		              {text: multiLang.MSFriendRequests, align: 'left', dataField: 'model',
 		                  cellsRenderer: function (row, column, value, rowData) {
@@ -265,7 +281,15 @@ if (typeof (Friends) == "undefined") {
 				pageable: true,
 				pageSize: 1,
 				enableHover: true,
-				rendered: function () {},
+				rendered: function () {
+					var rows = $("#friendsDataTable").jqxDataTable('getRows');
+		        	for ( var x in rows) {
+		        		var friends = rows[x].friends;
+		        		for ( var z in friends) {
+			        		$("#div" + friends[z].partyId).jqxTooltip({ content: friends[z].comments, position: 'mouse'});
+						}
+					}
+				},
 				columns: [
 				          {text: multiLang.MSFriends, align: 'left', dataField: 'model',
 				        	  cellsRenderer: function (row, column, value, rowData) {

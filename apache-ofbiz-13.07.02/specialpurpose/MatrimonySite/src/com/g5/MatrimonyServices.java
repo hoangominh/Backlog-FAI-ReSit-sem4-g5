@@ -77,7 +77,7 @@ public class MatrimonyServices {
 					UtilMisc.toMap("firstName", context.get("firstName"), "middleName", context.get("middleName"), "lastName", context.get("lastName"),
 							"gender", context.get("gender"), "maritalStatus", context.get("maritalStatus"), "height", context.get("height"),
 							"motherTongue", context.get("motherTongue"), "religion", context.get("religion"), "casteId", context.get("casteId"),
-							"birthDate", birthDate, "statusId", "PARTY_ENABLED", "comments", context.get("payment")));
+							"birthDate", birthDate, "statusId", "PARTY_ENABLED", "comments", context.get("comments")));
 			String partyId = (String) resultCreatePerson.get("partyId");
 //			createUserLogin
 			boolean useEncryption = "true".equals(UtilProperties.getPropertyValue("security.properties", "password.encrypt"));
@@ -155,7 +155,7 @@ public class MatrimonyServices {
 			dispatcher.runSync("updatePerson",
 					UtilMisc.toMap("partyId", partyId, "firstName", context.get("firstName"), "middleName", context.get("middleName"), "lastName", context.get("lastName"),
 							"gender", context.get("gender"), "maritalStatus", context.get("maritalStatus"), "height", context.get("height"),
-							"motherTongue", context.get("motherTongue"), "religion", context.get("religion"), "casteId", context.get("casteId"),
+							"motherTongue", context.get("motherTongue"), "religion", context.get("religion"), "casteId", context.get("casteId"), "comments", context.get("comments"),
 							"birthDate", birthDate, "userLogin", admin));
 //			update PRIMARY_PHONE
 			GenericValue TelecomNumber = delegator.makeValue("TelecomNumber", UtilMisc.toMap("contactMechId", context.get("contactNumberCMI"),
@@ -251,6 +251,7 @@ public class MatrimonyServices {
 		GenericValue person = delegator.findOne("PersonAndCaste", UtilMisc.toMap("partyId", partyId), false);
 		
 		profile.put("partyId", person.getString("partyId"));
+		profile.put("partyFullName", person.getString("partyFullName"));
 		profile.put("firstName", person.getString("firstName"));
 		profile.put("middleName", person.getString("middleName"));
 		profile.put("lastName", person.getString("lastName"));
@@ -262,7 +263,7 @@ public class MatrimonyServices {
 		profile.put("religion", person.getString("religion"));
 		profile.put("casteId", person.getString("casteId"));
 		profile.put("casteName", person.getString("casteName"));
-		profile.put("payment", person.getString("comments"));
+		profile.put("comments", person.getString("comments"));
 		profile.put("birthDate", person.getDate("birthDate").toString());
 		profile.put("height", person.getDouble("height"));
 		
@@ -360,7 +361,7 @@ public class MatrimonyServices {
 			conditions.add(EntityCondition.makeCondition("maritalStatus", EntityJoinOperator.EQUALS, maritalStatus));
 		}
 		List<GenericValue> person = delegator.findList("PersonAndCaste",
-				EntityCondition.makeCondition(conditions), UtilMisc.toSet("partyId", "partyFullName", "casteName", "gender"), UtilMisc.toList("firstName"), null, false);
+				EntityCondition.makeCondition(conditions), UtilMisc.toSet("partyId", "partyFullName", "casteName", "gender", "comments"), UtilMisc.toList("firstName"), null, false);
 		List<Map<String, Object>> listOncePage = FastList.newInstance();
 		int subPage = 0;
 		for (GenericValue x : person) {
@@ -379,6 +380,7 @@ public class MatrimonyServices {
 			mapOncePage.put("city", getCityByPartyId(delegator, x.getString("partyId")));
 			mapOncePage.put("genderDetails", UtilProperties.getMessage(resource, x.getString("gender"), locale));
 			mapOncePage.put("statusId", statusId);
+			mapOncePage.put("comments", x.getString("comments"));
 			if ((subPage%3) == 0) {
 				subPage = 0;
 				listOncePage = FastList.newInstance();
@@ -406,7 +408,7 @@ public class MatrimonyServices {
 		List<EntityCondition> conditions = FastList.newInstance();
 		conditions.add(EntityCondition.makeCondition("partyId", EntityJoinOperator.IN, friendIds));
 		List<GenericValue> person = delegator.findList("PersonAndCaste",
-				EntityCondition.makeCondition(conditions), UtilMisc.toSet("partyId", "partyFullName", "casteName", "gender"), UtilMisc.toList("firstName"), null, false);
+				EntityCondition.makeCondition(conditions), UtilMisc.toSet("partyId", "partyFullName", "casteName", "gender", "comments"), UtilMisc.toList("firstName"), null, false);
 		List<Map<String, Object>> listOncePage = FastList.newInstance();
 		int subPage = 0;
 		for (GenericValue x : person) {
@@ -423,6 +425,7 @@ public class MatrimonyServices {
 			mapOncePage.put("city", getCityByPartyId(delegator, x.getString("partyId")));
 			mapOncePage.put("genderDetails", UtilProperties.getMessage(resource, x.getString("gender"), locale));
 			mapOncePage.put("statusId", statusId);
+			mapOncePage.put("comments", x.getString("comments"));
 			mapOncePage.put("fromDate", statusRelationShip.get("fromDate"));
 			if ((subPage%3) == 0) {
 				subPage = 0;
@@ -449,7 +452,7 @@ public class MatrimonyServices {
 		List<EntityCondition> conditions = FastList.newInstance();
 		conditions.add(EntityCondition.makeCondition("partyId", EntityJoinOperator.IN, friendIds));
 		List<GenericValue> person = delegator.findList("PersonAndCaste",
-				EntityCondition.makeCondition(conditions), UtilMisc.toSet("partyId", "partyFullName", "casteName", "gender"), UtilMisc.toList("firstName"), null, false);
+				EntityCondition.makeCondition(conditions), UtilMisc.toSet("partyId", "partyFullName", "casteName", "gender", "comments"), UtilMisc.toList("firstName"), null, false);
 		List<Map<String, Object>> listOncePage = FastList.newInstance();
 		int subPage = 0;
 		for (GenericValue x : person) {
@@ -465,6 +468,7 @@ public class MatrimonyServices {
 			mapOncePage.put("city", getCityByPartyId(delegator, x.getString("partyId")));
 			mapOncePage.put("genderDetails", UtilProperties.getMessage(resource, x.getString("gender"), locale));
 			mapOncePage.put("statusId", statusId);
+			mapOncePage.put("comments", x.getString("comments"));
 			mapOncePage.put("fromDate", statusRelationShip.get("fromDate"));
 			if ((subPage%3) == 0) {
 				subPage = 0;
@@ -559,35 +563,70 @@ public class MatrimonyServices {
 		}
 		return listParties;
 	}
-	public static Map<String, Object> addFriend(DispatchContext ctx, Map<String, ? extends Object> context)
-			throws GenericEntityException, GenericServiceException {
+	@SuppressWarnings("unchecked")
+	public static Map<String, Object> addFriend(DispatchContext ctx, Map<String, ? extends Object> context) throws GenericTransactionException{
 		Map<String, Object> result = FastMap.newInstance();
 		Delegator delegator = ctx.getDelegator();
 		LocalDispatcher dispatcher = ctx.getDispatcher();
-		GenericValue admin = delegator.findOne("UserLogin", UtilMisc.toMap("userLoginId", "admin"), false);
-//		createPartyRelationship between two persons
-		dispatcher.runSync("createPartyRelationship",
-				UtilMisc.toMap("partyIdFrom", context.get("userLoginPartyId"), "partyIdTo", context.get("partyId"), "roleTypeIdFrom", "FRIEND",
-						"roleTypeIdTo", "FRIEND", "partyRelationshipTypeId", "FRIEND", "statusId", "REQUESTED", "userLogin", admin));
+		Locale locale = (Locale) context.get("locale");
+		boolean beganTx = TransactionUtil.begin(7200);
+		try {
+			GenericValue admin = delegator.findOne("UserLogin", UtilMisc.toMap("userLoginId", "admin"), false);
+//			createPartyRelationship between two persons
+			dispatcher.runSync("createPartyRelationship",
+					UtilMisc.toMap("partyIdFrom", context.get("userLoginPartyId"), "partyIdTo", context.get("partyId"), "roleTypeIdFrom", "FRIEND",
+							"roleTypeIdTo", "FRIEND", "partyRelationshipTypeId", "FRIEND", "statusId", "REQUESTED", "userLogin", admin));
+			Map<String, Object> partnerProfile = dispatcher.runSync("loadProfile",
+					UtilMisc.toMap("partyId", context.get("partyId"), "userLogin", admin));
+			Map<String, Object> profile = (Map<String, Object>) partnerProfile.get("profile");
+			String sendTo = (String) profile.get("email");
+			String partyFullName = (String) profile.get("partyFullName");
+			String body = partyFullName + " " + UtilProperties.getMessage(resource, "MSFriendRequestSent", locale) +
+					"<br/><a href='https://localhost:8443/MatrimonySite/control/TimeLine'>Matrimony Site</a>";
+			sendMail(dispatcher, sendTo, UtilProperties.getMessage(resource, "MSFriendRequestSent", locale),
+					body, (String) context.get("userLoginPartyId"), admin);
+		} catch (Exception e) {
+			TransactionUtil.rollback(beganTx, e.getMessage(), e);
+			e.printStackTrace();
+		}
 		result.put("partyId", context.get("partyId"));
+		TransactionUtil.commit(beganTx);
 		return result;
 	}
-	public static Map<String, Object> acceptFriend(DispatchContext ctx, Map<String, ? extends Object> context)
-			throws GenericEntityException, GenericServiceException {
+	@SuppressWarnings("unchecked")
+	public static Map<String, Object> acceptFriend(DispatchContext ctx, Map<String, ? extends Object> context) throws GenericTransactionException{
 		Map<String, Object> result = FastMap.newInstance();
 		Delegator delegator = ctx.getDelegator();
 		LocalDispatcher dispatcher = ctx.getDispatcher();
-		GenericValue admin = delegator.findOne("UserLogin", UtilMisc.toMap("userLoginId", "admin"), false);
+		Locale locale = (Locale) context.get("locale");
 		Long fromDateL = (Long) context.get("fromDate");
 		Timestamp fromDate = null;
 		if (UtilValidate.isNotEmpty(fromDateL)) {
 			fromDate = new Timestamp(fromDateL);
 		}
+		boolean beganTx = TransactionUtil.begin(7200);
 //		createPartyRelationship between two persons
-		dispatcher.runSync("updatePartyRelationship",
-				UtilMisc.toMap("partyIdFrom", context.get("partyId"), "partyIdTo", context.get("userLoginPartyId"), "roleTypeIdFrom", "FRIEND",
-						"roleTypeIdTo", "FRIEND", "partyRelationshipTypeId", "FRIEND", "statusId", "ACCEPTED", "fromDate", fromDate, "userLogin", admin));
+		try {
+			GenericValue admin = delegator.findOne("UserLogin", UtilMisc.toMap("userLoginId", "admin"), false);
+			dispatcher.runSync("updatePartyRelationship",
+					UtilMisc.toMap("partyIdFrom", context.get("partyId"), "partyIdTo", context.get("userLoginPartyId"), "roleTypeIdFrom", "FRIEND",
+							"roleTypeIdTo", "FRIEND", "partyRelationshipTypeId", "FRIEND", "statusId", "ACCEPTED", "fromDate", fromDate, "userLogin", admin));
+			
+			Map<String, Object> partnerProfile = dispatcher.runSync("loadProfile",
+					UtilMisc.toMap("partyId", context.get("partyId"), "userLogin", admin));
+			Map<String, Object> profile = (Map<String, Object>) partnerProfile.get("profile");
+			String sendTo = (String) profile.get("email");
+			String partyFullName = (String) profile.get("partyFullName");
+			String body = partyFullName + " " + UtilProperties.getMessage(resource, "MSFriendRequestWasAccepted", locale) +
+							"<br/><a href='https://localhost:8443/MatrimonySite/control/TimeLine'>Matrimony Site</a>";
+			sendMail(dispatcher, sendTo, UtilProperties.getMessage(resource, "MSFriendRequestWasAccepted", locale),
+					body, (String) context.get("userLoginPartyId"), admin);
+		} catch (Exception e) {
+			TransactionUtil.rollback(beganTx, e.getMessage(), e);
+			e.printStackTrace();
+		}
 		result.put("partyId", context.get("partyId"));
+		TransactionUtil.commit(beganTx);
 		return result;
 	}
 	public static Map<String, Object> cancelFriend(DispatchContext ctx, Map<String, ? extends Object> context)
@@ -607,5 +646,17 @@ public class MatrimonyServices {
 						"roleTypeIdTo", "FRIEND", "partyRelationshipTypeId", "FRIEND", "statusId", "CANCEL", "fromDate", fromDate, "userLogin", admin));
 		result.put("partyId", context.get("partyId"));
 		return result;
+	}
+	private static void sendMail(LocalDispatcher dispatcher, String sendTo, String subject, String body, String partyId, GenericValue admin) throws GenericServiceException {
+		Map<String, Object> email = FastMap.newInstance();
+		email.put("authUser", "matrimonynetwork@gmail.com");
+		email.put("sendFrom", "matrimonynetwork@gmail.com");
+		email.put("authPass", "ngominhhoa");
+		email.put("sendTo", sendTo);
+		email.put("subject", subject);
+		email.put("body", body);
+		email.put("partyId", partyId);
+		email.put("userLogin", admin);
+		dispatcher.runSync("sendMail", email);
 	}
 }

@@ -264,6 +264,7 @@ if (typeof (BasicLayer) == "undefined") {
 			value.city = $("#txtCity").jqxDropDownList('val');
 			value.motherTongue = $("#txtMotherTongue").val();
 			value.religion = $("#txtReligion").val();
+			value.comments = $("#txtIntroduction").val();
 			value.casteId = $("#txtCaste").jqxDropDownList('val');
 			value.maritalStatus = $("#txtMaritalStatus").jqxDropDownList('val');
 			return value;
@@ -282,6 +283,7 @@ if (typeof (BasicLayer) == "undefined") {
 				$("#txtCity").jqxDropDownList('val', data.city);
 				$("#txtMotherTongue").val(data.motherTongue);
 				$("#txtReligion").val(data.religion);
+				$("#txtIntroduction").val(data.comments);
 				$("#txtCaste").jqxDropDownList('val', data.casteId);
 				$("#txtMaritalStatus").jqxDropDownList('val', data.maritalStatus);
 			}

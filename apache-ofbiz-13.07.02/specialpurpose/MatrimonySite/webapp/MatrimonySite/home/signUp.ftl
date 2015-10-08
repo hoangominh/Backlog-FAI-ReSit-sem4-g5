@@ -46,6 +46,10 @@
 					<div class='span5'><label class='text-right'>${uiLabelMap.MSReligion}&nbsp;&nbsp;</label></div>
 					<div class='span7'><input type='text' class="medium-size-input" id="txtReligion" /></div>
 				</div>
+				<div class='row-fluid margin-bottom10'>
+					<div class='span5'><label class='text-right'>${uiLabelMap.MSIntroduction}&nbsp;&nbsp;</label></div>
+					<div class='span7'><textarea id="txtIntroduction" style="resize: none;width: 459%;" ></textarea></div>
+				</div>
 			</div>
 			<div class='span4'>
 				<div class='row-fluid margin-bottom10'>

@@ -71,11 +71,25 @@
 			<widgets>
 				<decorator-screen name="MatrimonySiteCommonDecorator" location="${parameters.mainDecoratorLocation}">
 					<decorator-section name="body">
-						<platform-specific>
+						<section>
+                            <condition>
+                                <if-has-permission permission="MSADMIN" action="_DASHBOARD"/>
+                            </condition>
+                            <widgets>
+                                <platform-specific>
 									<html>
-										<html-template location="component://MatrimonySite/webapp/MatrimonySite/home/timeLine.ftl" />
+										<html-template location="component://MatrimonySite/webapp/MatrimonySite/home/dashboard.ftl" />
 									</html>
-						</platform-specific>
+								</platform-specific>
+                            </widgets>
+                            <fail-widgets>
+                            		<platform-specific>
+										<html>
+											<html-template location="component://MatrimonySite/webapp/MatrimonySite/home/timeLine.ftl" />
+										</html>
+									</platform-specific>
+                            </fail-widgets>
+                        </section>
 					</decorator-section>
 				</decorator-screen>
 			</widgets>

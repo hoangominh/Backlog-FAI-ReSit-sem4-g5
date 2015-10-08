@@ -153,6 +153,7 @@ if (typeof (BasicLayer) == "undefined") {
 			value.city = $("#txtCity").jqxDropDownList('val');
 			value.motherTongue = $("#txtMotherTongue").val();
 			value.religion = $("#txtReligion").val();
+			value.comments = $("#txtIntroduction").val();
 			value.casteId = $("#txtCaste").jqxDropDownList('val');
 			value.maritalStatus = $("#txtMaritalStatus").jqxDropDownList('val');
 			return value;

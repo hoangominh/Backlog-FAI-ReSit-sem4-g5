@@ -5,7 +5,9 @@
     <SecurityPermission description="Update operations in the MatrimonySite Component." permissionId="MATRIMONY_UPDATE"/>
     <SecurityPermission description="Delete operations in the MatrimonySite Component." permissionId="MATRIMONY_DELETE"/>
     <SecurityPermission description="ALL operations in the MatrimonySite Component." permissionId="MATRIMONY_ADMIN"/>
-
+    <SecurityPermission description="Dashboard in the MatrimonySite Component." permissionId="MSADMIN_DASHBOARD"/>
+    
     <SecurityGroupPermission groupId="SUPER" permissionId="MATRIMONY_ADMIN"/>
+    <SecurityGroupPermission groupId="FULLADMIN" permissionId="MSADMIN_DASHBOARD"/>
 
 </entity-engine-xml>

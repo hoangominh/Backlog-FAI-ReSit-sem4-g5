@@ -286,6 +286,10 @@
 		<value xml:lang="en">Friend request sent</value>
 		<value xml:lang="vi">Đã gửi lời mời kết bạn</value>
 	</property>
+	<property key="MSFriendRequestWasAccepted">
+		<value xml:lang="en">Friend request was accepted</value>
+		<value xml:lang="vi">Yêu cầu kết bạn đã được chấp nhận</value>
+	</property>
 	<property key="MSCancel">
 		<value xml:lang="en">Cancel</value>
 		<value xml:lang="vi">Hủy</value>
@@ -297,5 +301,9 @@
 	<property key="MSViewProfile">
 		<value xml:lang="en">View Profile</value>
 		<value xml:lang="vi">Xem thông tin</value>
+	</property>
+	<property key="MSIntroduction">
+		<value xml:lang="en">Introduction</value>
+		<value xml:lang="vi">Giới thiệu</value>
 	</property>
 </resource>
