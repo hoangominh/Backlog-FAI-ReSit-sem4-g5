@@ -38,7 +38,8 @@
     display: inline;
 }
 .medium-size-input {
-	    width: 150px;
+	width: 164px;
+    height: 29px;
 }
 h4 {
     font-size: 14px;
@@ -99,6 +100,9 @@ h4 {
 }
 .margin-top10 {
 	margin-top: 10px;
+}
+.margin-bottom10 {
+	margin-bottom: 10px;
 }
 .form-action-button {
     margin: 0px 7px 6px 0px !important;

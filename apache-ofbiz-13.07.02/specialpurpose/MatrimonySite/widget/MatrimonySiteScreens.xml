@@ -6,6 +6,7 @@
         <section>
             <actions>
                 <set field="headerItem" value="main"/><!-- this highlights the selected menu-item with name "main" -->
+                <script location="component://MatrimonySite/webapp/MatrimonySite/WEB-INF/actions/TimeLine.groovy"/>
             </actions>
             <widgets>
                 <decorator-screen name="MatrimonySiteCommonDecorator" location="${parameters.mainDecoratorLocation}">
@@ -67,6 +68,7 @@
 	<screen name="TimeLine">
 		<section>
 			<actions>
+				<script location="component://MatrimonySite/webapp/MatrimonySite/WEB-INF/actions/TimeLine.groovy"/>
 			</actions>
 			<widgets>
 				<decorator-screen name="MatrimonySiteCommonDecorator" location="${parameters.mainDecoratorLocation}">
@@ -98,6 +100,7 @@
 	<screen name="Profile">
 		<section>
 			<actions>
+				<script location="component://MatrimonySite/webapp/MatrimonySite/WEB-INF/actions/TimeLine.groovy"/>
 			</actions>
 			<widgets>
 				<decorator-screen name="MatrimonySiteCommonDecorator" location="${parameters.mainDecoratorLocation}">
@@ -112,9 +115,28 @@
 			</widgets>
 		</section>
 	</screen>
+	<screen name="Friends">
+		<section>
+			<actions>
+				<script location="component://MatrimonySite/webapp/MatrimonySite/WEB-INF/actions/TimeLine.groovy"/>
+			</actions>
+			<widgets>
+				<decorator-screen name="MatrimonySiteCommonDecorator" location="${parameters.mainDecoratorLocation}">
+					<decorator-section name="body">
+						<platform-specific>
+									<html>
+										<html-template location="component://MatrimonySite/webapp/MatrimonySite/home/friends.ftl" />
+									</html>
+						</platform-specific>
+					</decorator-section>
+				</decorator-screen>
+			</widgets>
+		</section>
+	</screen>
 	<screen name="UpdateProfile">
 		<section>
 			<actions>
+				<script location="component://MatrimonySite/webapp/MatrimonySite/WEB-INF/actions/TimeLine.groovy"/>
 			</actions>
 			<widgets>
 				<decorator-screen name="MatrimonySiteCommonDecorator" location="${parameters.mainDecoratorLocation}">

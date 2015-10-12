@@ -115,6 +115,9 @@ if (typeof (AccountLayer) == "undefined") {
 			    readURL(this);
 			});
 			$("#renewals").click(function() {
+				var wtmp = window;
+		    	var tmpwidth = $('#jqxwindowRenewals').jqxWindow('width');
+		        $("#jqxwindowRenewals").jqxWindow({ position: { x: (wtmp.outerWidth - tmpwidth)/2, y: pageYOffset + 120 }});
 				$("#jqxwindowRenewals").jqxWindow('open');
 			});
 			$("#saveRenewals").click(function () {

@@ -647,6 +647,28 @@ public class MatrimonyServices {
 		result.put("partyId", context.get("partyId"));
 		return result;
 	}
+	public static Map<String, Object> listCustomers(DispatchContext ctx, Map<String, ? extends Object> context)
+			throws GenericEntityException, GenericServiceException {
+		Map<String, Object> result = FastMap.newInstance();
+		Delegator delegator = ctx.getDelegator();
+		Locale locale = (Locale) context.get("locale");
+		List<String> allCustomerIds = getPartiesByRolesAndPartyFromAndStatusRelationShip("Company", "INTERNAL_ORGANIZATIO", "CUSTOMER", delegator, true);
+		List<EntityCondition> conditions = FastList.newInstance();
+		conditions.add(EntityCondition.makeCondition("partyId", EntityJoinOperator.IN, allCustomerIds));
+		List<GenericValue> people = delegator.findList("PersonAndCaste",
+				EntityCondition.makeCondition(conditions), null, UtilMisc.toList("firstName"), null, false);
+		List<Map<String, Object>> listCustomers = FastList.newInstance();
+		for (GenericValue x : people) {
+			Map<String, Object> person = FastMap.newInstance();
+			person.putAll(x);
+			person.put("birthDate", x.getDate("birthDate").toString());
+			person.put("city", getCityByPartyId(delegator, x.getString("partyId")));
+			person.put("genderDetails", UtilProperties.getMessage(resource, x.getString("gender"), locale));
+			listCustomers.add(person);
+		}
+		result.put("listCustomers", listCustomers);
+		return result;
+	}
 	private static void sendMail(LocalDispatcher dispatcher, String sendTo, String subject, String body, String partyId, GenericValue admin) throws GenericServiceException {
 		Map<String, Object> email = FastMap.newInstance();
 		email.put("authUser", "matrimonynetwork@gmail.com");

@@ -99,7 +99,7 @@ if (typeof (BasicLayer) == "undefined") {
 	var BasicLayer = (function() {
 		var initJqxElements = function() {
 			$("#txtBirthDate").jqxDateTimeInput({theme: "energyblue", width: 162, height: 28 });
-			$('#txtBirthDate ').jqxDateTimeInput('setDate', null);
+//			$('#txtBirthDate ').jqxDateTimeInput('setDate', null);
 			$("#txtHeight").jqxNumberInput({ width: 162, height: 28, inputMode: 'simple', spinButtons: true, decimalDigits: 0 });
 			var listGender = [{value: 'M', label: multiLang.male}, {value: 'F', label: multiLang.female}];
 			$("#txtGender").jqxDropDownList({ theme: 'energyblue', width: 162, height: 28, source: listGender,

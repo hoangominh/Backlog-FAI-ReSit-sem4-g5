@@ -1,62 +1,34 @@
-<#--
-Licensed to the Apache Software Foundation (ASF) under one
-or more contributor license agreements.  See the NOTICE file
-distributed with this work for additional information
-regarding copyright ownership.  The ASF licenses this file
-to you under the Apache License, Version 2.0 (the
-"License"); you may not use this file except in compliance
-with the License.  You may obtain a copy of the License at
-
-http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing,
-software distributed under the License is distributed on an
-"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-KIND, either express or implied.  See the License for the
-specific language governing permissions and limitations
-under the License.
--->
-
 <#assign username = requestParameters.USERNAME?default((sessionAttributes.autoUserLogin.userLoginId)?default(""))>
 <#assign tenantId = requestParameters.tenantId!>
 
-<center>
-<div class="screenlet login-screenlet">
-  <div class="screenlet-title-bar">
-    <h3>${uiLabelMap.CommonPasswordChange}</h3>
+<link href="/MatrimonySite/images/themes/social-2/css/app/app.css" rel="stylesheet">
+<link href="/MatrimonySite/images/themes/social-2/css/vendor/all.css" rel="stylesheet">
+<body class="login">
+<div id="content">
+<div class="container-fluid">
+
+  <div class="lock-container">
+    <h1>Account Access</h1>
+    <div class="panel panel-default text-center">
+      <img src="/MatrimonySite/images/themes/social-2/images/people/110/guy-5.jpg" class="img-circle">
+      <div class="panel-body">
+      <form method="post" action="<@ofbizUrl>login</@ofbizUrl>" name="loginform">
+      	  <input type="hidden" name="requirePasswordChange" value="Y"/>
+          <input type="hidden" name="USERNAME" value="${username}"/>
+          <input type="hidden" name="tenantId" value="${tenantId!}"/>
+      		<h4>${username}</h4>
+      
+        <input class="form-control" type="password" name="PASSWORD" placeholder="${uiLabelMap.CommonCurrentPassword}">
+        <input class="form-control" type="password" name="newPassword" placeholder="${uiLabelMap.CommonNewPassword}">
+        	<input class="form-control" type="password" name="newPasswordVerify" placeholder="${uiLabelMap.CommonNewPasswordVerify}">
+        <input type="submit" class="btn btn-primary" value="${uiLabelMap.CommonSubmit}"/>
+        </form>
+      </div>
+    </div>
   </div>
-  <div class="screenlet-body">
-    <form method="post" action="<@ofbizUrl>login</@ofbizUrl>" name="loginform">
-      <input type="hidden" name="requirePasswordChange" value="Y"/>
-      <input type="hidden" name="USERNAME" value="${username}"/>
-      <input type="hidden" name="tenantId" value="${tenantId!}"/>
-      <table cellspacing="0">
-        <tr>
-          <td class="label">${uiLabelMap.CommonUsername}</td>
-          <td>${username}</td>
-        </tr>
-        <tr>
-          <td class="label">${uiLabelMap.CommonCurrentPassword}</td>
-          <td><input type="password" name="PASSWORD" value="" size="20"/></td>
-        </tr>
-        <tr>
-          <td class="label">${uiLabelMap.CommonNewPassword}</td>
-          <td><input type="password" name="newPassword" value="" size="20"/></td>
-        </tr>
-        <tr>
-          <td class="label">${uiLabelMap.CommonNewPasswordVerify}</td>
-          <td><input type="password" name="newPasswordVerify" value="" size="20"/></td>
-        </tr>
-        <tr>
-          <td colspan="2" align="center">
-            <input type="submit" value="${uiLabelMap.CommonSubmit}"/>
-          </td>
-        </tr>
-      </table>
-    </form>
-  </div>
+
 </div>
-</center>
+</div>
 
 <script language="JavaScript" type="text/javascript">
   document.loginform.PASSWORD.focus();

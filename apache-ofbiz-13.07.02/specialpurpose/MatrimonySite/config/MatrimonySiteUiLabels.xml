@@ -106,6 +106,10 @@
         <value xml:lang="en">Basic Details</value>
         <value xml:lang="vi">Thông tin cơ bản</value>
     </property>
+    <property key="MSAbout">
+        <value xml:lang="en">About</value>
+        <value xml:lang="vi">Thông tin</value>
+    </property>
     <property key="MSFirstName">
     	<value xml:lang="en">First name</value>
         <value xml:lang="vi">Tên</value>
@@ -305,5 +309,41 @@
 	<property key="MSIntroduction">
 		<value xml:lang="en">Introduction</value>
 		<value xml:lang="vi">Giới thiệu</value>
+	</property>
+	<property key="MSCustomersList">
+		<value xml:lang="en">Customers List</value>
+		<value xml:lang="vi">Danh sách thành viên</value>
+	</property>
+	<property key="MSClearFilter">
+		<value xml:lang="en">Clear Filter</value>
+		<value xml:lang="vi">Bỏ lọc</value>
+	</property>
+	<property key="MSPartyId">
+		<value xml:lang="en">Customer ID</value>
+		<value xml:lang="vi">Mã người dùng</value>
+	</property>
+	<property key="MSCustomersChart">
+		<value xml:lang="en">Chart registered users</value>
+		<value xml:lang="vi">Biểu đồ người dùng đăng ký mới</value>
+	</property>
+	<property key="MSRegisteredUsers">
+		<value xml:lang="en">Registered users</value>
+		<value xml:lang="vi">Người dùng đăng ký</value>
+	</property>
+	<property key="MSStatisticsTheNumberOfPeopleRegisteredInTheWeek">
+		<value xml:lang="en">Statistics the number of people registered in the week</value>
+		<value xml:lang="vi">Thống kê số lượng người đăng ký trong tuần</value>
+	</property>
+	<property key="MSLanguage">
+		<value xml:lang="en">Language</value>
+		<value xml:lang="vi">Ngôn ngữ</value>
+	</property>
+	<property key="MSEnglish">
+		<value xml:lang="en">English</value>
+		<value xml:lang="vi">English</value>
+	</property>
+	<property key="MSVietnamese">
+		<value xml:lang="en">Vietnamese</value>
+		<value xml:lang="vi">Tiếng Việt</value>
 	</property>
 </resource>
