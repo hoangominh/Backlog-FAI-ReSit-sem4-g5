@@ -29,6 +29,17 @@
           <a href="#sidebar-chat" data-toggle="sidebar-menu" data-effect="st-effect-1" class="toggle pull-right visible-xs"><i class="fa fa-comments"></i></a>
           <a class="navbar-brand" href="TimeLine">Matrimony Site</a>
         </div>
+        
+        <ul class="nav navbar-nav navbar-right">
+	        <li class="dropdown" id="liLanguage">
+	        <a href="#" class="dropdown-toggle" data-toggle="dropdown">${uiLabelMap.MSLanguage} <span class="caret"></span></a>
+	              <ul class="dropdown-menu" role="menu">
+	                <li><a href="setSessionLocale?newLocale=en">${uiLabelMap.MSEnglish}</a></li>
+	                <li><a href="setSessionLocale?newLocale=vi">${uiLabelMap.MSVietnamese}</a></li>
+	              </ul>
+	        </li>
+	    </ul>
+        
       </div>
     </div>
 
@@ -175,7 +186,7 @@
       </div>
     </div>
     <footer class="footer">
-    <strong>ThemeKit</strong> v4.0.0 &copy; Copyright 2015
+    <strong>Matrimony Site</strong> v4.0.0 &copy; Copyright 2015
   </footer>
   </div>
 </body>

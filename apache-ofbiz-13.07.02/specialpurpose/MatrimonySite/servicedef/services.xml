@@ -67,6 +67,11 @@
     <service name="loadCustomers" engine="java" invoke="listCustomers" location="com.g5.MatrimonyServices" auth="true">
 		<attribute name="listCustomers" mode="OUT" type="List" optional="true"/>
 	</service>
+    <service name="loadCustomersDataChart" engine="java" invoke="loadCustomersDataChart" location="com.g5.MatrimonyServices" auth="true">
+		<attribute name="from" mode="IN" type="Long" optional="false"></attribute>
+		<attribute name="to" mode="IN" type="Long" optional="false"></attribute>
+		<attribute name="listCustomers" mode="OUT" type="List" optional="true"/>
+	</service>
 	<service name="addFriend" engine="java" invoke="addFriend" location="com.g5.MatrimonyServices" auth="true">
 		<attribute name="partyId" mode="INOUT" type="String" optional="false"/>
 		<attribute name="userLoginPartyId" mode="IN" type="String" optional="false"/>

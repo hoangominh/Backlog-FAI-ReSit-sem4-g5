@@ -158,7 +158,7 @@
       </div>
     </div>
     <footer class="footer">
-    <strong>ThemeKit</strong> v4.0.0 &copy; Copyright 2015
+    <strong>Matrimony Site</strong> v4.0.0 &copy; Copyright 2015
   </footer>
   </div>
   <script>

@@ -1,6 +1,8 @@
 package com.g5;
 
 import java.sql.Timestamp;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -15,6 +17,7 @@ import org.ofbiz.entity.GenericEntityException;
 import org.ofbiz.entity.GenericValue;
 import org.ofbiz.entity.condition.EntityCondition;
 import org.ofbiz.entity.condition.EntityJoinOperator;
+import org.ofbiz.entity.condition.EntityOperator;
 import org.ofbiz.entity.transaction.GenericTransactionException;
 import org.ofbiz.entity.transaction.TransactionUtil;
 import org.ofbiz.entity.util.EntityFindOptions;
@@ -249,7 +252,9 @@ public class MatrimonyServices {
 		}
 //		get basic info
 		GenericValue person = delegator.findOne("PersonAndCaste", UtilMisc.toMap("partyId", partyId), false);
-		
+		if (UtilValidate.isEmpty(person)) {
+			return result;
+		}
 		profile.put("partyId", person.getString("partyId"));
 		profile.put("partyFullName", person.getString("partyFullName"));
 		profile.put("firstName", person.getString("firstName"));
@@ -668,6 +673,87 @@ public class MatrimonyServices {
 		}
 		result.put("listCustomers", listCustomers);
 		return result;
+	}
+	@SuppressWarnings("static-access")
+	public static Map<String, Object> loadCustomersDataChart(DispatchContext ctx, Map<String, ? extends Object> context)
+			throws GenericEntityException, GenericServiceException {
+		Map<String, Object> result = FastMap.newInstance();
+		Delegator delegator = ctx.getDelegator();
+//		{ Day: 'Monday', Total: 30, HasFriends: 10, NotHasFriends: 25 },
+		Long fromL = (Long) context.get("from");
+		Long toL = (Long) context.get("to");
+		Date fromD = new Date(fromL);
+		Date toD = new Date(toL);
+		Calendar calStart = Calendar.getInstance();
+		calStart.setTime(fromD);
+		Calendar calEnd = Calendar.getInstance();
+		calEnd.setTime(toD);
+		calEnd.add(Calendar.DATE, + 1);
+		List<Map<String, Object>> listCustomers = FastList.newInstance();
+		int max = 0;
+		while (calStart.before(calEnd)) {
+			Map<String, Object> user = FastMap.newInstance();
+			Timestamp fromDate = new Timestamp(calStart.getTimeInMillis());
+			user.put("Day", calStart.get(calStart.DATE));
+			user.put("Total", getTotal(delegator, fromDate));
+			user.put("RequestFriend", getRequestFriend(delegator, fromDate));
+			calStart.add(Calendar.DATE, + 1);
+			listCustomers.add(user);
+			max += 1;
+			if (max == 30) {
+				break;
+			}
+		}
+		result.put("listCustomers", listCustomers);
+		return result;
+	}
+	private static int getTotal(Delegator delegator, Timestamp fromDate) throws GenericEntityException {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(new Date(fromDate.getTime()));
+		
+		cal.set(Calendar.HOUR_OF_DAY, 0);
+		cal.set(Calendar.MINUTE, 0);
+		cal.set(Calendar.SECOND, 0);
+		cal.set(Calendar.MILLISECOND, 0);
+		Timestamp startDay = new Timestamp(cal.getTimeInMillis());
+		cal.set(Calendar.HOUR_OF_DAY, 23);
+		cal.set(Calendar.MINUTE, 59);
+		cal.set(Calendar.SECOND, 59);
+		cal.set(Calendar.MILLISECOND, 999);
+		Timestamp endDay = new Timestamp(cal.getTimeInMillis());
+		
+		List<EntityCondition> conditions = FastList.newInstance();
+		conditions.add(EntityCondition.makeCondition("fromDate", EntityOperator.GREATER_THAN_EQUAL_TO, startDay));
+		conditions.add(EntityCondition.makeCondition("fromDate", EntityOperator.LESS_THAN_EQUAL_TO, endDay));
+		
+		conditions.add(EntityCondition.makeCondition(UtilMisc.toMap("partyIdFrom", "Company", "roleTypeIdFrom", "INTERNAL_ORGANIZATIO", "roleTypeIdTo", "CUSTOMER")));
+		List<GenericValue> listPartyRelationship = delegator.findList("PartyRelationship",
+				EntityCondition.makeCondition(conditions, EntityJoinOperator.AND), null, null, null, false);
+		return listPartyRelationship.size();
+	}
+	private static int getRequestFriend(Delegator delegator, Timestamp fromDate) throws GenericEntityException {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(new Date(fromDate.getTime()));
+		
+		cal.set(Calendar.HOUR_OF_DAY, 0);
+		cal.set(Calendar.MINUTE, 0);
+		cal.set(Calendar.SECOND, 0);
+		cal.set(Calendar.MILLISECOND, 0);
+		Timestamp startDay = new Timestamp(cal.getTimeInMillis());
+		cal.set(Calendar.HOUR_OF_DAY, 23);
+		cal.set(Calendar.MINUTE, 59);
+		cal.set(Calendar.SECOND, 59);
+		cal.set(Calendar.MILLISECOND, 999);
+		Timestamp endDay = new Timestamp(cal.getTimeInMillis());
+		
+		List<EntityCondition> conditions = FastList.newInstance();
+		conditions.add(EntityCondition.makeCondition("fromDate", EntityOperator.GREATER_THAN_EQUAL_TO, startDay));
+		conditions.add(EntityCondition.makeCondition("fromDate", EntityOperator.LESS_THAN_EQUAL_TO, endDay));
+		
+		conditions.add(EntityCondition.makeCondition(UtilMisc.toMap("roleTypeIdFrom", "FRIEND", "roleTypeIdTo", "FRIEND")));
+		List<GenericValue> listPartyRelationship = delegator.findList("PartyRelationship",
+				EntityCondition.makeCondition(conditions, EntityJoinOperator.AND), null, null, null, false);
+		return listPartyRelationship.size();
 	}
 	private static void sendMail(LocalDispatcher dispatcher, String sendTo, String subject, String body, String partyId, GenericValue admin) throws GenericServiceException {
 		Map<String, Object> email = FastMap.newInstance();

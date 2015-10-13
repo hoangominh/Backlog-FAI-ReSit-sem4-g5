@@ -4,98 +4,96 @@ $(document).ready(function() {
 });
 if (typeof (CustomerChartLayer) == "undefined") {
 	var CustomerChartLayer = (function() {
+		var chart;
 		var initJqxElements = function() {
-			 // prepare chart data as an array
-            var sampleData = [
-                    { Day: 'Monday', Total: 30, HasFriends: 10, NotHasFriends: 25 },
-                    { Day: 'Tuesday', Total: 25, HasFriends: 15, NotHasFriends: 10 },
-                    { Day: 'Wednesday', Total: 30, HasFriends: 10, NotHasFriends: 25 },
-                    { Day: 'Thursday', Total: 40, HasFriends: 20, NotHasFriends: 25 },
-                    { Day: 'Friday', Total: 45, HasFriends: 20, NotHasFriends: 25 },
-                    { Day: 'Saturday', Total: 30, HasFriends: 20, NotHasFriends: 30 },
-                    { Day: 'Sunday', Total: 20, HasFriends: 30, NotHasFriends: 10 }
-                ];
-            // prepare jqxChart settings
-            var settings = {
-                title: multiLang.MSRegisteredUsers,
-                description: multiLang.MSStatisticsTheNumberOfPeopleRegisteredInTheWeek,
-                enableAnimations: true,
-                showLegend: true,
-                padding: { left: 10, top: 10, right: 15, bottom: 10 },
-                titlePadding: { left: 90, top: 0, right: 0, bottom: 10 },
-                source: sampleData,
-                colorScheme: 'scheme05',
-                xAxis: {
-                    dataField: 'Day',
-                    unitInterval: 1,
-                    tickMarks: { visible: true, interval: 1 },
-                    gridLinesInterval: { visible: true, interval: 1 },
-                    valuesOnTicks: false,
-                    padding: { bottom: 10 }
-                },
-                valueAxis: {
-                    unitInterval: 10,
-                    minValue: 0,
-                    maxValue: 50,
-                    title: { text: multiLang.MSRegisteredUsers },
-                    labels: { horizontalAlignment: 'right' }
-                },
-                seriesGroups:
-                    [
-                        {
-                            type: 'line',
-                            series:
-                            [
-								{
-								    dataField: 'Total',
-								    symbolType: 'square',
-								    labels:
-								    {
-								        visible: true,
-								        backgroundColor: '#FEFEFE',
-								        backgroundOpacity: 0.2,
-								        borderColor: '#7FC4EF',
-								        borderOpacity: 0.7,
-								        padding: { left: 5, right: 5, top: 0, bottom: 0 }
-								    }
-								},
-                                {
-                                    dataField: 'HasFriends',
-                                    symbolType: 'square',
-                                    labels: 
-                                    {
-                                        visible: true,
-                                        backgroundColor: '#FEFEFE',
-                                        backgroundOpacity: 0.2,
-                                        borderColor: '#7FC4EF',
-                                        borderOpacity: 0.7,
-                                        padding: { left: 5, right: 5, top: 0, bottom: 0 }
-                                    }
-                                },
-                                {
-                                	dataField: 'NotHasFriends',
-                                	symbolType: 'square',
-                                	labels:
-                                	{
-                                		visible: true,
-                                		backgroundColor: '#ccc',
-                                		backgroundOpacity: 0.2,
-                                		borderColor: '#7FC4EF',
-                                		borderOpacity: 0.7,
-                                		padding: { left: 5, right: 5, top: 0, bottom: 0 }
-                                	}
-                                }
-                            ]
-                        }
-                    ]
-            };
-            // setup the chart
-            $('#chartContainer').jqxChart(settings);
+			$("#rangeTime").jqxDateTimeInput({ width: 250, height: 25,  selectionMode: 'range' });
+			var end = new Date();
+			var start = new Date();
+		    var start = new Date(start.setDate(start.getDate() - 7));
+			$("#rangeTime").jqxDateTimeInput('setRange', start, end);
+			$("#rangeTime").trigger('change');
+		};
+		var renderChart = function() {
+			 var settings = {
+		                title: multiLang.MSRegisteredUsers,
+		                description: multiLang.MSStatisticsTheNumberOfPeopleRegisteredInTheWeek,
+		                enableAnimations: true,
+		                showLegend: true,
+		                padding: { left: 10, top: 10, right: 15, bottom: 10 },
+		                titlePadding: { left: 90, top: 0, right: 0, bottom: 10 },
+		                source: _data(),
+		                colorScheme: 'scheme05',
+		                xAxis: {
+		                    dataField: 'Day',
+		                    unitInterval: 1,
+		                    tickMarks: { visible: true, interval: 1 },
+		                    gridLinesInterval: { visible: true, interval: 1 },
+		                    valuesOnTicks: false,
+		                    padding: { bottom: 10 }
+		                },
+		                valueAxis: {
+		                    unitInterval: 10,
+		                    minValue: 0,
+		                    maxValue: 50,
+		                    title: { text: multiLang.MSQuantity },
+		                    labels: { horizontalAlignment: 'right' }
+		                },
+		                seriesGroups:
+		                    [
+		                        {
+		                            type: 'line',
+		                            series:
+		                            [
+										{
+										    dataField: 'Total',
+										    symbolType: 'square',
+										    labels:
+										    {
+										        visible: true,
+										        backgroundColor: '#FEFEFE',
+										        backgroundOpacity: 0.2,
+										        borderColor: '#7FC4EF',
+										        borderOpacity: 0.7,
+										        padding: { left: 5, right: 5, top: 0, bottom: 0 }
+										    }
+										},
+		                                {
+		                                    dataField: 'RequestFriend',
+		                                    symbolType: 'square',
+		                                    labels: 
+		                                    {
+		                                        visible: true,
+		                                        backgroundColor: '#FEFEFE',
+		                                        backgroundOpacity: 0.2,
+		                                        borderColor: '#7FC4EF',
+		                                        borderOpacity: 0.7,
+		                                        padding: { left: 5, right: 5, top: 0, bottom: 0 }
+		                                    }
+		                                }
+		                            ]
+		                        }
+		                    ]
+		            };
+		            $('#chartContainer').jqxChart(settings);
+		};
+		var handlerEvents= function() {
+			$('#rangeTime').on('change', function (event){
+				renderChart();
+			});
+		};
+		var _data = function() {
+			var range = $("#rangeTime").jqxDateTimeInput('getRange');
+			return DataAccess.getData({
+				url: "loadCustomersDataChart",
+				data: {from: range.from.getTime(), to: range.to.getTime()},
+				source: "listCustomers"});
 		};
 		return {
 			init: function() {
+				handlerEvents();
 				initJqxElements();
-			}
+			},
+			_data: _data
 		};
 	})();
 }

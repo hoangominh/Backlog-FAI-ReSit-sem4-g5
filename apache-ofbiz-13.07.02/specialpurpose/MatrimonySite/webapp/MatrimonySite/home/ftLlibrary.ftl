@@ -17,10 +17,14 @@
 	$(document).ready(function() {
 		$("#liLanguage")
 		.mouseenter(function() {
-			$("#liLanguage").addClass("open");
+			setTimeout(function() {
+				$("#liLanguage").addClass("open");
+			}, 300);
 		})
 		.mouseleave(function() {
-			$("#liLanguage").removeClass("open");
+			setTimeout(function() {
+				$("#liLanguage").removeClass("open");
+			}, 500);
 		});
 	});
 	var multiLang = {
@@ -56,6 +60,8 @@
 			MSBirthDate: "${StringUtil.wrapString(uiLabelMap.MSBirthDate)}",
 			MSRegisteredUsers: "${StringUtil.wrapString(uiLabelMap.MSRegisteredUsers)}",
 			MSStatisticsTheNumberOfPeopleRegisteredInTheWeek: "${StringUtil.wrapString(uiLabelMap.MSStatisticsTheNumberOfPeopleRegisteredInTheWeek)}",
+			MSOver18: "${StringUtil.wrapString(uiLabelMap.MSOver18)}",
+			MSQuantity: "${StringUtil.wrapString(uiLabelMap.MSQuantity)}",
 	};
 	var getLocalization = function () {
         var localizationobj = {};

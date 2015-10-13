@@ -11,7 +11,7 @@ if (typeof (BaseLayer) == "undefined") {
 			            { input: '#txtLastName', message: multiLang.FieldRequired, action: 'change, blur', rule: 'required'},
 			            { input: '#txtFirstName', message: multiLang.FieldRequired, action: 'change, blur', rule: 'required'},
 			            { input: '#txtContactNumber', message: multiLang.FieldRequired, action: 'change, blur', rule: 'required'},
-		                { input: '#txtBirthDate', message: multiLang.NotValid, action: 'valueChanged', 
+		                { input: '#txtBirthDate', message: multiLang.MSOver18, action: 'valueChanged', 
 		                	rule: function (input, commit) {
 		                		var currentTime = new Date().getFullYear();
 		                		var value = 0;

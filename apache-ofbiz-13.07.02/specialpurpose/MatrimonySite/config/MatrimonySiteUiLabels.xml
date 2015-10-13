@@ -186,6 +186,10 @@
 		<value xml:lang="en">Not Valid</value>
 		<value xml:lang="vi">Không hợp lệ</value>
 	</property>
+	<property key="MSOver18">
+		<value xml:lang="en">You must be over 18 years old</value>
+		<value xml:lang="vi">Bạn phải hơn 18 tuổi</value>
+	</property>
 	<property key="NeverMarried">
 		<value xml:lang="en">Never Married</value>
 		<value xml:lang="vi">Chưa kết hôn</value>
@@ -324,15 +328,19 @@
 	</property>
 	<property key="MSCustomersChart">
 		<value xml:lang="en">Chart registered users</value>
-		<value xml:lang="vi">Biểu đồ người dùng đăng ký mới</value>
+		<value xml:lang="vi">Biểu đồ người dùng</value>
 	</property>
 	<property key="MSRegisteredUsers">
 		<value xml:lang="en">Registered users</value>
 		<value xml:lang="vi">Người dùng đăng ký</value>
 	</property>
 	<property key="MSStatisticsTheNumberOfPeopleRegisteredInTheWeek">
-		<value xml:lang="en">Statistics the number of people registered in the week</value>
-		<value xml:lang="vi">Thống kê số lượng người đăng ký trong tuần</value>
+		<value xml:lang="en">User Statistics</value>
+		<value xml:lang="vi">Thống kê người dùng</value>
+	</property>
+	<property key="MSQuantity">
+		<value xml:lang="en">Quantity</value>
+		<value xml:lang="vi">Số lượng</value>
 	</property>
 	<property key="MSLanguage">
 		<value xml:lang="en">Language</value>
@@ -345,5 +353,9 @@
 	<property key="MSVietnamese">
 		<value xml:lang="en">Vietnamese</value>
 		<value xml:lang="vi">Tiếng Việt</value>
+	</property>
+	<property key="MSRangeTime">
+		<value xml:lang="en">Range Time</value>
+		<value xml:lang="vi">Khoảng thời gian</value>
 	</property>
 </resource>
